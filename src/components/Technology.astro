@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+const capabilities = [['radar','URL monitoring'],['scan','Visual similarity signals'],['evidence','Structured evidence capture'],['eye','Infringement review'],['platform','Case management'],['report','Enforcement tracking']];
+const flow = ['Discovery','Detection','Verification','Evidence','Enforcement','Reporting'];
+---
+<section class="section technology dark-section" id="technology" aria-labelledby="technology-title">
+  <div class="tech-grid-bg" aria-hidden="true"></div>
+  <div class="container tech-layout">
+    <div class="tech-copy" data-reveal>
+      <span class="section-kicker light-kicker">Technology</span>
+      <h2 id="technology-title">Built for Digital Enforcement</h2>
+      <p>Technology helps transform large-scale online monitoring into structured and reviewable enforcement workflows.</p>
+      <div class="capability-list">
+        {capabilities.map(([icon,label]) => <div><span><Icon name={icon}/></span>{label}</div>)}
+      </div>
+      <p class="human-note"><span>H</span><b>Human-guided decisions</b><br/>Automated signals can assist human review; enforcement decisions remain considered and contextual.</p>
+    </div>
+    <div class="pipeline-panel" data-reveal>
+      <div class="panel-bar"><span><i></i> Enforcement workflow</span><small>Structured review</small></div>
+      <div class="pipeline">
+        {flow.map((label, i) => <div class:list={['pipeline-step', { active: i < 4 }]} style={`--flow-index:${i}`}><span>{String(i+1).padStart(2,'0')}</span><div><strong>{label}</strong><small>{i === 0 ? 'Signals received' : i === 1 ? 'Potential match' : i === 2 ? 'Human review' : i === 3 ? 'Record secured' : i === 4 ? 'Action prepared' : 'Outcome tracked'}</small></div>{i < flow.length-1 && <i class="connector"></i>}</div>)}
+      </div>
+      <div class="pipeline-foot"><div><small>Workflow integrity</small><strong><span></span> Stages connected</strong></div><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+---
+import Logo from './Logo.astro';
+const nav = [['Solutions','solutions'],['Technology','technology'],['Process','process'],['About','about'],['FAQ','faq'],['Contact','contact']];
+---
+<header class="site-header" data-header>
+  <div class="container nav-shell">
+    <Logo light />
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="/#home">Home</a>
+      {nav.map(([label,id]) => <a href={`/#${id}`}>{label}</a>)}
+    </nav>
+    <a class="button button-sm header-cta" href="/#contact">Protect Your Content</a>
+    <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav id="mobile-menu" class="mobile-nav" data-menu aria-label="Mobile navigation">
+    <a href="/#home">Home</a>
+    {nav.map(([label,id]) => <a href={`/#${id}`}>{label}</a>)}
+    <a class="button" href="/#contact">Protect Your Content</a>
+  </nav>
+</header>

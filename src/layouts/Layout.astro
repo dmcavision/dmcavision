@@ -1,0 +1,107 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+}
+
+const { title, description, canonical = 'https://dmcavision.com/' } = Astro.props;
+const siteRoot = 'https://dmcavision.com/';
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'DMCA Vision LLC',
+  url: siteRoot,
+  logo: `${siteRoot}logo.svg`,
+  description,
+  address: { '@type': 'PostalAddress', addressCountry: 'US' }
+};
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'DMCA Vision',
+  url: siteRoot,
+  description
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="color-scheme" content="light" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteRoot}og-image.svg`} />
+    <meta property="og:site_name" content="DMCA Vision" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteRoot}og-image.svg`} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organization)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <slot />
+    <script>
+      const header = document.querySelector('[data-header]');
+      const toggle = document.querySelector('[data-menu-toggle]');
+      const menu = document.querySelector('[data-menu]');
+      const closeMenu = () => {
+        toggle?.setAttribute('aria-expanded', 'false');
+        menu?.removeAttribute('data-open');
+        document.body.classList.remove('menu-open');
+      };
+      const syncHeader = () => header?.toggleAttribute('data-scrolled', window.scrollY > 18);
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+      toggle?.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        menu?.toggleAttribute('data-open', open);
+        document.body.classList.toggle('menu-open', open);
+      });
+      menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+      window.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
+
+      const reveal = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.setAttribute('data-visible', '');
+            reveal.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('[data-reveal], [data-motion]').forEach((element) => reveal.observe(element));
+
+      document.querySelectorAll('details').forEach((details) => {
+        const summary = details.querySelector('summary');
+        const syncExpanded = () => summary?.setAttribute('aria-expanded', String(details.open));
+        syncExpanded();
+        details.addEventListener('toggle', syncExpanded);
+      });
+
+      const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+      form?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        const message = form.querySelector<HTMLElement>('[data-form-status]');
+        if (message) message.textContent = 'Thank you. Your information is ready for review. We will be in touch shortly.';
+        form.reset();
+      });
+    </script>
+  </body>
+</html>

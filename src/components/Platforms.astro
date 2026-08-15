@@ -1,0 +1,17 @@
+---
+const items = ['Social Networks','Video Platforms','Websites','Search Results','Online Marketplaces','File Sharing','Streaming Platforms','Content Communities'];
+---
+<section class="section platforms" aria-labelledby="platforms-title">
+  <div class="container platform-layout">
+    <div class="section-heading" data-reveal><span class="section-kicker">Digital reach</span><h2 id="platforms-title">Protection Across the Digital Ecosystem</h2><p>Online infringement rarely stays in one place. Structured coverage helps bring varied digital channels into a consistent review process.</p><p class="disclaimer">Platform names and trademarks, where referenced, remain the property of their respective owners. DMCA Vision is not affiliated with those platforms unless expressly stated.</p></div>
+    <div class="ecosystem" data-reveal aria-label="Digital platform categories connected to DMCA Vision">
+      <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+      <svg class="eco-links" viewBox="0 0 600 500" preserveAspectRatio="none" aria-hidden="true">
+        <g><path d="M300 250 515 250M300 250 452 353M300 250 300 395M300 250 148 353M300 250 85 250M300 250 148 147M300 250 300 105M300 250 452 147"/></g>
+      </svg>
+      <div class="eco-center"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M17 2.5 29 7v8.6c0 7.6-4.9 13-12 15.9C9.9 28.6 5 23.2 5 15.6V7l12-4.5Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="17" r="3" fill="currentColor"/></svg><b>DMCA<br/>VISION</b></div>
+      <span class="hub-signal signal-a"></span><span class="hub-signal signal-b"></span><span class="hub-signal signal-c"></span>
+      {items.map((item, i) => <div class="eco-node" style={`--i:${i}`}><span></span>{item}</div>)}
+    </div>
+  </div>
+</section>

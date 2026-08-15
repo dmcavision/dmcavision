@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+const items = [
+  ['bolt','Technology-Enabled','Efficient workflows designed for digital environments.'],
+  ['evidence','Evidence-Focused','Structured documentation supports clear enforcement records.'],
+  ['users','Human Review','Potential infringements can be reviewed before action.'],
+  ['report','Transparent Reporting','Clear visibility into cases, actions and outcomes.']
+];
+---
+<section class="section why-us" aria-labelledby="why-title">
+  <div class="container">
+    <div class="section-heading split" data-reveal><div><span class="section-kicker">Why DMCA Vision</span><h2 id="why-title">A Structured Approach to<br/>Copyright Enforcement</h2></div><p>Credible protection depends on disciplined processes—not exaggerated promises. Our approach keeps the work clear, reviewable and connected.</p></div>
+    <div class="why-grid">{items.map(([icon,title,copy], i) => <article data-reveal style={`--delay:${i*65}ms`}><span class="why-number">0{i+1}</span><div class="icon-box"><Icon name={icon}/></div><h3>{title}</h3><p>{copy}</p></article>)}</div>
+  </div>
+</section>

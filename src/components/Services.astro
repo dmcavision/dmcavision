@@ -1,0 +1,22 @@
+---
+import Icon from './Icon.astro';
+const items = [
+  ['radar','Copyright Monitoring','Identify potentially unauthorized use of protected content across online channels.'],
+  ['scan','Infringement Analysis','Review suspected infringement before enforcement action is considered.'],
+  ['evidence','Evidence Collection','Capture and organize digital evidence relevant to identified infringement.'],
+  ['send','DMCA Takedown Support','Prepare and submit appropriate copyright removal requests where applicable.'],
+  ['platform','Platform Enforcement','Assist with copyright reporting workflows across supported online platforms.'],
+  ['report','Case Tracking & Reporting','Maintain structured records of enforcement activity, outcomes and supporting evidence.']
+];
+---
+<section class="section services" id="solutions" aria-labelledby="solutions-title">
+  <div class="container">
+    <div class="section-heading split" data-reveal>
+      <div><span class="section-kicker">Solutions</span><h2 id="solutions-title">Copyright Protection,<br/>From Detection to Enforcement</h2></div>
+      <p>A connected approach to finding potential misuse, documenting what matters and supporting proportionate action.</p>
+    </div>
+    <div class="services-grid">
+      {items.map(([icon,title,copy], i) => <article class="service-card" data-reveal style={`--delay:${i * 55}ms`}><div class="card-number">0{i+1}</div><div class="icon-box"><Icon name={icon}/></div><h3>{title}</h3><p>{copy}</p><a href="#contact" aria-label={`Discuss ${title}`}>Discuss this solution <span>→</span></a></article>)}
+    </div>
+  </div>
+</section>

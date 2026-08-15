@@ -1,0 +1,17 @@
+---
+const steps = [
+  ['Monitor','Protected content and relevant online channels can be monitored for potential matches.'],
+  ['Verify','Potential infringement is reviewed to determine whether further action may be appropriate.'],
+  ['Preserve Evidence','Relevant URLs, screenshots and supporting information are organized into an enforcement record.'],
+  ['Enforce','Appropriate reporting or takedown mechanisms may be used depending on the platform and circumstances.'],
+  ['Track','Actions, responses and outcomes remain organized for reporting and follow-up.']
+];
+---
+<section class="section process" id="process" aria-labelledby="process-title">
+  <div class="container">
+    <div class="section-heading center" data-reveal><span class="section-kicker">Our process</span><h2 id="process-title">From Detection to Resolution</h2><p>A practical, documented path from first signal through action and follow-up.</p></div>
+    <ol class="timeline" data-motion>
+      {steps.map(([title,copy], i) => <li data-reveal style={`--delay:${i * 70}ms;--step-index:${i}`}><div class="step-marker"><span>{String(i+1).padStart(2,'0')}</span></div><h3>{title}</h3><p>{copy}</p></li>)}
+    </ol>
+  </div>
+</section>

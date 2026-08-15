@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+const items = [
+  ['image','Images & Photography','Unauthorized reproduction and distribution of protected visual works.'],
+  ['video','Video & Media','Monitoring for unauthorized publishing, re-uploading and distribution.'],
+  ['text','Written Content','Articles, publications, educational material and other original works.'],
+  ['creative','Creative Assets','Designs, graphics, illustrations and digital creative works.'],
+  ['code','Software & Digital Products','Online distribution or copying of protected software and digital assets.'],
+  ['brand','Brand Content','Authorized brand media and protected marketing materials.']
+];
+---
+<section class="section protect" aria-labelledby="protect-title">
+  <div class="container">
+    <div class="section-heading center" data-reveal><span class="section-kicker">Coverage</span><h2 id="protect-title">What We Protect</h2><p>Support for the digital works that power modern businesses and creative livelihoods.</p></div>
+    <div class="protect-grid">
+      {items.map(([icon,title,copy], i) => <article class="protect-card" data-reveal style={`--delay:${i * 55}ms`}><div class="icon-box"><Icon name={icon}/></div><h3>{title}</h3><p>{copy}</p></article>)}
+    </div>
+  </div>
+</section>
