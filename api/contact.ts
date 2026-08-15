@@ -51,20 +51,21 @@ export type EmailMessage = {
   text: string;
 };
 
-type HandlerOptions = {
+export type HandlerOptions = {
   env?: Record<string, string | undefined>;
   now?: Date;
   random?: (size: number) => Uint8Array;
   sendEmail?: (message: EmailMessage) => Promise<void>;
 };
 
+const SAFE_FAILURE_MESSAGE = 'We could not submit your request at this time. Please try again or contact contact@dmcavision.com.';
+
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function json(body: Record<string, unknown>, status = 200, headers: HeadersInit = {}) {
-  return new Response(JSON.stringify(body), {
+  return Response.json(body, {
     status,
     headers: {
-      'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
       'X-Content-Type-Options': 'nosniff',
       ...headers
@@ -222,56 +223,56 @@ function isLikelySpam(data: ContactPayload, now: Date): boolean {
 
 export async function handleContactRequest(request: Request, options: HandlerOptions = {}): Promise<Response> {
   if (request.method !== 'POST') {
-    return json({ ok: false, error: 'Method not allowed.' }, 405, { Allow: 'POST' });
+    return json({ success: false, message: 'Method not allowed.' }, 405, { Allow: 'POST' });
   }
 
   const origin = request.headers.get('origin');
   if (origin && !ALLOWED_ORIGINS.has(origin)) {
-    return json({ ok: false, error: 'Request origin is not allowed.' }, 403);
+    return json({ success: false, message: 'Request origin is not allowed.' }, 403);
   }
 
   const contentType = request.headers.get('content-type')?.split(';', 1)[0].trim().toLowerCase();
   if (contentType !== 'application/json') {
-    return json({ ok: false, error: 'Unsupported request format.' }, 415);
+    return json({ success: false, message: 'Unsupported request format.' }, 415);
   }
 
   const declaredLength = Number(request.headers.get('content-length') ?? 0);
   if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
-    return json({ ok: false, error: 'The submitted request is too large.' }, 413);
+    return json({ success: false, message: 'The submitted request is too large.' }, 413);
   }
 
-  let rawBody: string;
+  let bodyForSize: string;
   try {
-    rawBody = await request.text();
+    bodyForSize = await request.clone().text();
   } catch {
-    return json({ ok: false, error: 'The submitted form data is invalid.' }, 400);
+    return json({ success: false, message: 'The submitted form data is invalid.' }, 400);
   }
-  if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY_BYTES) {
-    return json({ ok: false, error: 'The submitted request is too large.' }, 413);
+  if (new TextEncoder().encode(bodyForSize).byteLength > MAX_BODY_BYTES) {
+    return json({ success: false, message: 'The submitted request is too large.' }, 413);
   }
 
   let payload: unknown;
   try {
-    payload = JSON.parse(rawBody);
+    payload = await request.json();
   } catch {
-    return json({ ok: false, error: 'The submitted form data is invalid.' }, 400);
+    return json({ success: false, message: 'The submitted form data is invalid.' }, 400);
   }
 
   if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
     const honeypot = (payload as Record<string, unknown>).companyWebsite;
     if (typeof honeypot === 'string' && honeypot.trim()) {
-      return json({ ok: true, message: 'Request received.' });
+      return json({ success: true, message: 'Request received.' });
     }
   }
 
   const validation = validateContactPayload(payload);
   if (!validation.success) {
-    return json({ ok: false, error: 'Please correct the highlighted fields.', fieldErrors: validation.fieldErrors }, 400);
+    return json({ success: false, message: 'Please correct the highlighted fields.', fieldErrors: validation.fieldErrors }, 400);
   }
 
   const now = options.now ?? new Date();
   if (isLikelySpam(validation.data, now)) {
-    return json({ ok: true, message: 'Request received.' });
+    return json({ success: true, message: 'Request received.' });
   }
 
   const env = options.env ?? process.env;
@@ -280,7 +281,7 @@ export async function handleContactRequest(request: Request, options: HandlerOpt
   const fromEmail = env.CONTACT_FROM_EMAIL?.trim();
   if (!apiKey || !toEmail || !fromEmail) {
     console.error('[contact] Email service configuration is incomplete.');
-    return json({ ok: false, error: 'We could not submit your request at this time. Please try again or contact contact@dmcavision.com.' }, 500);
+    return json({ success: false, message: SAFE_FAILURE_MESSAGE }, 500);
   }
 
   const reference = generateInquiryReference(now, options.random ?? randomBytes);
@@ -294,7 +295,7 @@ export async function handleContactRequest(request: Request, options: HandlerOpt
     await sender(buildInternalEmail(validation.data, reference, now, fromEmail, toEmail));
   } catch {
     console.error(`[contact] Internal notification delivery failed for ${reference}.`);
-    return json({ ok: false, error: 'We could not submit your request at this time. Please try again or contact contact@dmcavision.com.' }, 502);
+    return json({ success: false, message: SAFE_FAILURE_MESSAGE }, 500);
   }
 
   try {
@@ -303,9 +304,20 @@ export async function handleContactRequest(request: Request, options: HandlerOpt
     console.error(`[contact] Submitter confirmation delivery failed for ${reference}.`);
   }
 
-  return json({ ok: true, reference });
+  return json({ success: true, message: 'Request received.', reference });
 }
 
-export default function handler(request: Request): Promise<Response> {
-  return handleContactRequest(request);
+export function createContactFunction(options: HandlerOptions = {}) {
+  return {
+    async fetch(request: Request): Promise<Response> {
+      try {
+        return await handleContactRequest(request, options);
+      } catch {
+        console.error('[contact] Unexpected request processing failure.');
+        return json({ success: false, message: SAFE_FAILURE_MESSAGE }, 500);
+      }
+    }
+  };
 }
+
+export default createContactFunction();

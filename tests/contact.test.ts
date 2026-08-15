@@ -2,11 +2,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import {
+  createContactFunction,
+  CONTENT_TYPES,
   escapeHtml,
   generateInquiryReference,
-  handleContactRequest,
   MAX_BODY_BYTES,
-  type EmailMessage
+  type EmailMessage,
+  type HandlerOptions
 } from '../api/contact.ts';
 
 const env = {
@@ -42,22 +44,38 @@ function options(sendEmail: (message: EmailMessage) => Promise<void> = async () 
   return { env, now, random: () => new Uint8Array([0, 1, 2, 3, 4, 5]), sendEmail };
 }
 
+function invoke(requestValue: Request, handlerOptions: HandlerOptions = options()) {
+  return createContactFunction(handlerOptions).fetch(requestValue);
+}
+
 async function responseJson(response: Response) {
-  return await response.json() as { ok: boolean; reference?: string; error?: string; fieldErrors?: Record<string, string> };
+  return await response.json() as { success: boolean; reference?: string; message?: string; fieldErrors?: Record<string, string> };
 }
 
 test('valid submission sends internal and confirmation emails and returns a server reference', async () => {
   const messages: EmailMessage[] = [];
-  const response = await handleContactRequest(request(validPayload()), options(async (message) => { messages.push(message); }));
+  const response = await invoke(request(validPayload()), options(async (message) => { messages.push(message); }));
   const body = await responseJson(response);
   assert.equal(response.status, 200);
-  assert.equal(body.ok, true);
+  assert.equal(body.success, true);
   assert.match(body.reference ?? '', /^DV-2026-[A-Z2-9]{6}$/);
   assert.equal(messages.length, 2);
   assert.equal(messages[0].to, env.CONTACT_TO_EMAIL);
   assert.equal(messages[0].replyTo, 'jordan@example.com');
   assert.equal(messages[1].to, 'jordan@example.com');
   assert.match(messages[1].text, /does not guarantee removal/i);
+});
+
+test('Other content type matches the frontend option and is accepted', async () => {
+  const response = await invoke(request(validPayload({ contentType: 'Other' })));
+  const body = await responseJson(response);
+  assert.equal(response.status, 200);
+  assert.equal(body.success, true);
+});
+
+test('all backend content types exactly match visible frontend option values', async () => {
+  const source = await readFile(new URL('../src/components/Contact.astro', import.meta.url), 'utf8');
+  for (const contentType of CONTENT_TYPES) assert.ok(source.includes(`<option>${contentType}</option>`));
 });
 
 for (const [name, overrides, field] of [
@@ -70,7 +88,7 @@ for (const [name, overrides, field] of [
   ['unchecked confirmation', { confirmed: false }, 'confirmed']
 ] as const) {
   test(name, async () => {
-    const response = await handleContactRequest(request(validPayload(overrides)), options());
+    const response = await invoke(request(validPayload(overrides)));
     const body = await responseJson(response);
     assert.equal(response.status, 400);
     assert.ok(body.fieldErrors?.[field]);
@@ -79,96 +97,115 @@ for (const [name, overrides, field] of [
 
 test('filled honeypot returns a generic response without sending email or a reference', async () => {
   let sends = 0;
-  const response = await handleContactRequest(request(validPayload({ companyWebsite: 'spam.example' })), options(async () => { sends += 1; }));
+  const response = await invoke(request(validPayload({ companyWebsite: 'spam.example' })), options(async () => { sends += 1; }));
   const body = await responseJson(response);
   assert.equal(response.status, 200);
-  assert.equal(body.ok, true);
+  assert.equal(body.success, true);
   assert.equal(body.reference, undefined);
   assert.equal(sends, 0);
 });
 
 test('honeypot is silent even when the remaining payload is incomplete', async () => {
   let sends = 0;
-  const response = await handleContactRequest(request({ companyWebsite: 'spam.example' }), options(async () => { sends += 1; }));
+  const response = await invoke(request({ companyWebsite: 'spam.example' }), options(async () => { sends += 1; }));
   const body = await responseJson(response);
   assert.equal(response.status, 200);
-  assert.equal(body.ok, true);
+  assert.equal(body.success, true);
   assert.equal(body.fieldErrors, undefined);
   assert.equal(sends, 0);
 });
 
 test('implausibly fast submission receives the same generic spam response', async () => {
   let sends = 0;
-  const response = await handleContactRequest(request(validPayload({ formStartedAt: now.getTime() - 100 })), options(async () => { sends += 1; }));
+  const response = await invoke(request(validPayload({ formStartedAt: now.getTime() - 100 })), options(async () => { sends += 1; }));
   assert.equal(response.status, 200);
   assert.equal(sends, 0);
 });
 
 test('internal email failure returns a safe error and does not claim success', async () => {
-  const response = await handleContactRequest(request(validPayload()), options(async () => { throw new Error('provider detail'); }));
+  const response = await invoke(request(validPayload()), options(async () => { throw new Error('provider detail'); }));
   const body = await responseJson(response);
-  assert.equal(response.status, 502);
-  assert.equal(body.ok, false);
-  assert.doesNotMatch(body.error ?? '', /provider|resend|api/i);
+  assert.equal(response.status, 500);
+  assert.equal(body.success, false);
+  assert.doesNotMatch(body.message ?? '', /provider|resend|api/i);
 });
 
 test('confirmation email failure preserves successful inquiry response', async () => {
   let sends = 0;
-  const response = await handleContactRequest(request(validPayload()), options(async () => {
+  const response = await invoke(request(validPayload()), options(async () => {
     sends += 1;
     if (sends === 2) throw new Error('confirmation failed');
   }));
   const body = await responseJson(response);
   assert.equal(response.status, 200);
-  assert.equal(body.ok, true);
+  assert.equal(body.success, true);
   assert.ok(body.reference);
   assert.equal(sends, 2);
 });
 
 test('non-POST request returns JSON 405 with Allow header', async () => {
-  const response = await handleContactRequest(request('', { method: 'GET' }), options());
+  const response = await invoke(request('', { method: 'GET' }));
+  const body = await responseJson(response);
   assert.equal(response.status, 405);
+  assert.equal(body.success, false);
+  assert.equal(body.message, 'Method not allowed.');
   assert.equal(response.headers.get('allow'), 'POST');
   assert.match(response.headers.get('content-type') ?? '', /application\/json/);
 });
 
 test('malformed JSON returns 400', async () => {
-  const response = await handleContactRequest(request('{bad json', { raw: true }), options());
+  const response = await invoke(request('{bad json', { raw: true }));
   assert.equal(response.status, 400);
 });
 
 test('unexpected content type returns 415', async () => {
-  const response = await handleContactRequest(request('fullName=test', { raw: true, contentType: 'application/x-www-form-urlencoded' }), options());
+  const response = await invoke(request('fullName=test', { raw: true, contentType: 'application/x-www-form-urlencoded' }));
   assert.equal(response.status, 415);
 });
 
 test('declared or actual oversized body returns 413', async () => {
-  const declared = await handleContactRequest(request(validPayload(), { contentLength: MAX_BODY_BYTES + 1 }), options());
-  const actual = await handleContactRequest(request({ data: 'x'.repeat(MAX_BODY_BYTES) }), options());
+  const declared = await invoke(request(validPayload(), { contentLength: MAX_BODY_BYTES + 1 }));
+  const actual = await invoke(request({ data: 'x'.repeat(MAX_BODY_BYTES) }));
   assert.equal(declared.status, 413);
   assert.equal(actual.status, 413);
 });
 
 test('origin allowlist permits production, local, and absent origins but rejects others', async () => {
-  const production = await handleContactRequest(request(validPayload(), { origin: 'https://dmcavision.com' }), options());
-  const local = await handleContactRequest(request(validPayload(), { origin: 'http://localhost:4321' }), options());
-  const absent = await handleContactRequest(request(validPayload()), options());
-  const rejected = await handleContactRequest(request(validPayload(), { origin: 'https://malicious.example' }), options());
+  const production = await invoke(request(validPayload(), { origin: 'https://dmcavision.com' }));
+  const www = await invoke(request(validPayload(), { origin: 'https://www.dmcavision.com' }));
+  const local = await invoke(request(validPayload(), { origin: 'http://localhost:4321' }));
+  const absent = await invoke(request(validPayload()));
+  const rejected = await invoke(request(validPayload(), { origin: 'https://malicious.example' }));
   assert.equal(production.status, 200);
+  assert.equal(www.status, 200);
   assert.equal(local.status, 200);
   assert.equal(absent.status, 200);
   assert.equal(rejected.status, 403);
 });
 
-test('missing server configuration fails safely', async () => {
-  const response = await handleContactRequest(request(validPayload()), { env: {}, now, sendEmail: async () => undefined });
+test('unexpected exception is contained by the Web Standard fetch boundary', async () => {
+  const response = await invoke(request(validPayload()), {
+    ...options(),
+    random: () => { throw new Error('unexpected internal detail D:\\server\\path'); }
+  });
   const body = await responseJson(response);
   assert.equal(response.status, 500);
-  assert.doesNotMatch(body.error ?? '', /RESEND_API_KEY|CONTACT_TO_EMAIL|CONTACT_FROM_EMAIL/);
+  assert.deepEqual(body, {
+    success: false,
+    message: 'We could not submit your request at this time. Please try again or contact contact@dmcavision.com.'
+  });
+  assert.doesNotMatch(JSON.stringify(body), /unexpected|server|stack|resend|api[_ -]?key/i);
+});
+
+test('missing server configuration fails safely', async () => {
+  const response = await invoke(request(validPayload()), { env: {}, now, sendEmail: async () => undefined });
+  const body = await responseJson(response);
+  assert.equal(response.status, 500);
+  assert.doesNotMatch(body.message ?? '', /RESEND_API_KEY|CONTACT_TO_EMAIL|CONTACT_FROM_EMAIL/);
 });
 
 test('unexpected payload fields are rejected', async () => {
-  const response = await handleContactRequest(request(validPayload({ admin: true })), options());
+  const response = await invoke(request(validPayload({ admin: true })));
   const body = await responseJson(response);
   assert.equal(response.status, 400);
   assert.ok(body.fieldErrors?.form);
@@ -179,10 +216,13 @@ test('email HTML escaping and reference randomness helpers are safe', () => {
   assert.equal(generateInquiryReference(now, () => new Uint8Array([0, 1, 2, 3, 4, 5])), 'DV-2026-ABCDEF');
 });
 
-test('frontend contains duplicate-submit and network-error guards', async () => {
+test('frontend contains duplicate-submit and network-error guards and never renders response objects', async () => {
   const source = await readFile(new URL('../src/components/Contact.astro', import.meta.url), 'utf8');
   assert.match(source, /if \(submitting\) return/);
   assert.match(source, /catch \{/);
   assert.match(source, /submitButton\.disabled = active/);
   assert.match(source, /Please try again or contact contact@dmcavision\.com/);
+  assert.match(source, /typeof result\?\.message === 'string'/);
+  assert.doesNotMatch(source, /textContent\s*=\s*result(?:\.|\s|;)/);
+  assert.doesNotMatch(source, /\[object Object\]/);
 });

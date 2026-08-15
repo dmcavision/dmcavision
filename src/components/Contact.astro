@@ -122,20 +122,30 @@
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(payload)
         });
-        const result = await response.json().catch(() => null) as { ok?: boolean; reference?: string; error?: string; fieldErrors?: Record<string, string> } | null;
+        const result = await response.json().catch(() => null) as Record<string, unknown> | null;
+        const fallbackMessage = 'We could not submit your request at this time. Please try again or contact contact@dmcavision.com.';
+        const message = typeof result?.message === 'string' && result.message.trim()
+          ? result.message
+          : typeof result?.error === 'string' && result.error.trim()
+            ? result.error
+            : fallbackMessage;
+        const fieldErrors = result?.fieldErrors && typeof result.fieldErrors === 'object' && !Array.isArray(result.fieldErrors)
+          ? Object.fromEntries(Object.entries(result.fieldErrors).filter((entry): entry is [string, string] => typeof entry[1] === 'string'))
+          : null;
 
-        if (!response.ok || !result?.ok) {
-          if (result?.fieldErrors) showFieldErrors(result.fieldErrors);
-          else showGeneralError(result?.error ?? 'We could not submit your request at this time. Please try again or contact contact@dmcavision.com.');
+        if (!response.ok || result?.success !== true) {
+          if (fieldErrors && Object.keys(fieldErrors).length) showFieldErrors(fieldErrors);
+          else showGeneralError(message);
           return;
         }
 
         const reference = form.querySelector<HTMLElement>('[data-reference]');
         const referenceBlock = form.querySelector<HTMLElement>('[data-reference-block]');
         const referenceNote = form.querySelector<HTMLElement>('[data-reference-note]');
-        if (reference) reference.textContent = result.reference ?? '';
-        referenceBlock?.toggleAttribute('hidden', !result.reference);
-        referenceNote?.toggleAttribute('hidden', !result.reference);
+        const referenceValue = typeof result.reference === 'string' ? result.reference : '';
+        if (reference) reference.textContent = referenceValue;
+        referenceBlock?.toggleAttribute('hidden', !referenceValue);
+        referenceNote?.toggleAttribute('hidden', !referenceValue);
         if (fields) fields.hidden = true;
         if (success) { success.hidden = false; success.focus(); }
       } catch {
