@@ -3,5 +3,9 @@ dist/
 .astro/
 .vercel/
 .env
+.env.local
+.env.production
+.env.development
+.env.test
 .env.*
 !.env.example

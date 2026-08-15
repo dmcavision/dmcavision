@@ -1,14 +1,157 @@
 <section class="section contact" id="contact" aria-labelledby="contact-title">
   <div class="contact-grid-bg" aria-hidden="true"></div>
   <div class="container contact-layout">
-    <div class="contact-copy" data-reveal><span class="section-kicker light-kicker">Start a review</span><h2 id="contact-title">Take Control of Your Digital Content</h2><p>If your copyrighted content is being reproduced or distributed without authorization, DMCA Vision can help you organize the information needed to review the issue and determine appropriate next steps.</p><div class="contact-points"><div><span>01</span><p><b>Share the source</b><small>Tell us what you own and where it appears.</small></p></div><div><span>02</span><p><b>Request a review</b><small>We’ll assess the information and available next steps.</small></p></div></div><div class="contact-actions"><a class="button button-sm" href="#review-form">Submit an Infringement</a><a class="button button-sm button-ghost" href="mailto:contact@dmcavision.com">Contact DMCA Vision</a></div><a href="mailto:contact@dmcavision.com" class="contact-email">contact@dmcavision.com <span>↗</span></a></div>
-    <form class="contact-form" id="review-form" data-contact-form data-reveal>
-      <div class="form-head"><div><small>Infringement review</small><h3>Tell us about the issue</h3></div><span>Review request</span></div>
-      <div class="form-grid"><label>Full Name <span>*</span><input type="text" name="name" autocomplete="name" required /></label><label>Business / Organization<input type="text" name="organization" autocomplete="organization" /></label><label>Email <span>*</span><input type="email" name="email" autocomplete="email" required /></label><label>Website<input type="url" name="website" inputmode="url" placeholder="https://" /></label><label>Type of Content <span>*</span><select name="contentType" required><option value="" selected disabled>Select content type</option><option>Images & Photography</option><option>Video & Media</option><option>Written Content</option><option>Creative Assets</option><option>Software & Digital Products</option><option>Brand Content</option><option>Other</option></select></label><label>Infringing URL <span>*</span><input type="url" name="infringingUrl" inputmode="url" placeholder="https://" required /></label></div>
-      <label>Additional Information<textarea name="details" rows="4" placeholder="Briefly describe the protected work and suspected unauthorized use."></textarea></label>
-      <label class="checkbox"><input type="checkbox" name="accuracy" required /><span>I confirm that the information I submit is accurate to the best of my knowledge.</span></label>
-      <button class="button form-submit" type="submit">Request Review <span aria-hidden="true">→</span></button>
-      <p class="form-note">By submitting this form, you acknowledge that this inquiry does not create an attorney-client relationship.</p><p class="form-status" data-form-status aria-live="polite"></p>
+    <div class="contact-copy" data-reveal>
+      <span class="section-kicker light-kicker">Start a review</span>
+      <h2 id="contact-title">Take Control of Your Digital Content</h2>
+      <p>If your copyrighted content is being reproduced or distributed without authorization, DMCA Vision can help you organize the information needed to review the issue and determine appropriate next steps.</p>
+      <div class="contact-points">
+        <div><span>01</span><p><b>Share the source</b><small>Tell us what you own and where it appears.</small></p></div>
+        <div><span>02</span><p><b>Request a review</b><small>We’ll assess the information and available next steps.</small></p></div>
+      </div>
+      <div class="contact-actions">
+        <a class="button button-sm" href="#review-form">Submit an Infringement</a>
+        <a class="button button-sm button-ghost" href="mailto:contact@dmcavision.com">Contact DMCA Vision</a>
+      </div>
+      <a href="mailto:contact@dmcavision.com" class="contact-email">contact@dmcavision.com <span>↗</span></a>
+    </div>
+
+    <form class="contact-form" id="review-form" data-contact-form data-reveal novalidate>
+      <div data-form-fields>
+        <div class="form-head"><div><small>Infringement review</small><h3>Tell us about the issue</h3></div><span>Review request</span></div>
+        <p class="form-status" data-form-status role="status" aria-live="polite" tabindex="-1"></p>
+        <div class="form-grid">
+          <label>Full Name <span>*</span><input type="text" name="fullName" autocomplete="name" minlength="2" maxlength="120" aria-describedby="error-fullName" required /><small class="field-error" id="error-fullName" data-error-for="fullName"></small></label>
+          <label>Business / Organization<input type="text" name="organization" autocomplete="organization" maxlength="160" aria-describedby="error-organization" /><small class="field-error" id="error-organization" data-error-for="organization"></small></label>
+          <label>Email <span>*</span><input type="email" name="email" autocomplete="email" maxlength="254" aria-describedby="error-email" required /><small class="field-error" id="error-email" data-error-for="email"></small></label>
+          <label>Website<input type="url" name="website" inputmode="url" maxlength="2048" placeholder="https://" aria-describedby="error-website" /><small class="field-error" id="error-website" data-error-for="website"></small></label>
+          <label>Type of Content <span>*</span><select name="contentType" aria-describedby="error-contentType" required><option value="" selected disabled>Select content type</option><option>Images & Photography</option><option>Video & Media</option><option>Written Content</option><option>Creative Assets</option><option>Software & Digital Products</option><option>Brand Content</option><option>Other</option></select><small class="field-error" id="error-contentType" data-error-for="contentType"></small></label>
+          <label>Infringing URL <span>*</span><input type="url" name="infringingUrl" inputmode="url" maxlength="2048" placeholder="https://" aria-describedby="error-infringingUrl" required /><small class="field-error" id="error-infringingUrl" data-error-for="infringingUrl"></small></label>
+        </div>
+        <label>Additional Information<textarea name="additionalInformation" rows="4" maxlength="5000" aria-describedby="error-additionalInformation" placeholder="Briefly describe the protected work and suspected unauthorized use."></textarea><small class="field-error" id="error-additionalInformation" data-error-for="additionalInformation"></small></label>
+        <label class="hp-field" aria-hidden="true">Leave this field empty<input type="text" name="companyWebsite" autocomplete="off" tabindex="-1" /></label>
+        <input type="hidden" name="formStartedAt" value="" />
+        <label class="checkbox"><input type="checkbox" name="confirmed" aria-describedby="error-confirmed" required /><span>I confirm that the information I submit is accurate to the best of my knowledge.</span></label>
+        <small class="field-error checkbox-error" id="error-confirmed" data-error-for="confirmed"></small>
+        <button class="button form-submit" type="submit"><span data-submit-label>Request Review</span> <span aria-hidden="true">→</span></button>
+        <p class="form-note">By submitting this form, you acknowledge that this inquiry does not create an attorney-client relationship.</p>
+      </div>
+
+      <div class="form-success" data-form-success role="status" aria-live="polite" tabindex="-1" hidden>
+        <span class="success-mark" aria-hidden="true">✓</span>
+        <small>Submission complete</small>
+        <h3>Request received</h3>
+        <p>Thank you. Your infringement review request has been submitted to DMCA Vision.</p>
+        <div class="reference-block" data-reference-block><span>Reference</span><strong data-reference></strong></div>
+        <p class="success-note" data-reference-note>Please retain this reference for future correspondence.</p>
+        <button class="button button-sm" type="button" data-submit-another>Submit another request</button>
+      </div>
     </form>
   </div>
 </section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const fields = form.querySelector<HTMLElement>('[data-form-fields]');
+    const success = form.querySelector<HTMLElement>('[data-form-success]');
+    const status = form.querySelector<HTMLElement>('[data-form-status]');
+    const submitButton = form.querySelector<HTMLButtonElement>('[type="submit"]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
+    const startedAt = form.elements.namedItem('formStartedAt') as HTMLInputElement | null;
+    let submitting = false;
+
+    const resetStartedAt = () => { if (startedAt) startedAt.value = String(Date.now()); };
+    const clearErrors = () => {
+      form.querySelectorAll<HTMLElement>('[data-error-for]').forEach((element) => { element.textContent = ''; });
+      form.querySelectorAll<HTMLElement>('[aria-invalid="true"]').forEach((element) => element.removeAttribute('aria-invalid'));
+      if (status) { status.textContent = ''; status.removeAttribute('data-error'); }
+    };
+    const setSubmitting = (active: boolean) => {
+      submitting = active;
+      if (submitButton) submitButton.disabled = active;
+      if (submitLabel) submitLabel.textContent = active ? 'Processing…' : 'Request Review';
+      form.toggleAttribute('aria-busy', active);
+    };
+    const showGeneralError = (message: string) => {
+      if (!status) return;
+      status.textContent = message;
+      status.setAttribute('data-error', '');
+      status.focus();
+    };
+    const showFieldErrors = (errors: Record<string, string>) => {
+      let firstInvalid: HTMLElement | null = null;
+      Object.entries(errors).forEach(([name, message]) => {
+        if (name === 'form') { showGeneralError(message); return; }
+        const error = form.querySelector<HTMLElement>(`[data-error-for="${CSS.escape(name)}"]`);
+        const control = form.elements.namedItem(name);
+        if (error) error.textContent = message;
+        if (control instanceof HTMLElement) {
+          control.setAttribute('aria-invalid', 'true');
+          firstInvalid ??= control;
+        }
+      });
+      (firstInvalid as HTMLElement | null)?.focus();
+    };
+
+    resetStartedAt();
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submitting) return;
+      clearErrors();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const data = new FormData(form);
+      const payload = {
+        fullName: String(data.get('fullName') ?? ''),
+        organization: String(data.get('organization') ?? ''),
+        email: String(data.get('email') ?? ''),
+        website: String(data.get('website') ?? ''),
+        contentType: String(data.get('contentType') ?? ''),
+        infringingUrl: String(data.get('infringingUrl') ?? ''),
+        additionalInformation: String(data.get('additionalInformation') ?? ''),
+        confirmed: data.get('confirmed') === 'on',
+        companyWebsite: String(data.get('companyWebsite') ?? ''),
+        formStartedAt: Number(data.get('formStartedAt'))
+      };
+
+      setSubmitting(true);
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => null) as { ok?: boolean; reference?: string; error?: string; fieldErrors?: Record<string, string> } | null;
+
+        if (!response.ok || !result?.ok) {
+          if (result?.fieldErrors) showFieldErrors(result.fieldErrors);
+          else showGeneralError(result?.error ?? 'We could not submit your request at this time. Please try again or contact contact@dmcavision.com.');
+          return;
+        }
+
+        const reference = form.querySelector<HTMLElement>('[data-reference]');
+        const referenceBlock = form.querySelector<HTMLElement>('[data-reference-block]');
+        const referenceNote = form.querySelector<HTMLElement>('[data-reference-note]');
+        if (reference) reference.textContent = result.reference ?? '';
+        referenceBlock?.toggleAttribute('hidden', !result.reference);
+        referenceNote?.toggleAttribute('hidden', !result.reference);
+        if (fields) fields.hidden = true;
+        if (success) { success.hidden = false; success.focus(); }
+      } catch {
+        showGeneralError('We could not submit your request at this time. Please try again or contact contact@dmcavision.com.');
+      } finally {
+        setSubmitting(false);
+      }
+    });
+
+    form.querySelector('[data-submit-another]')?.addEventListener('click', () => {
+      form.reset();
+      clearErrors();
+      resetStartedAt();
+      if (success) success.hidden = true;
+      if (fields) fields.hidden = false;
+      form.querySelector<HTMLInputElement>('[name="fullName"]')?.focus();
+    });
+  }
+</script>
