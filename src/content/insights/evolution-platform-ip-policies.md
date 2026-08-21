@@ -2,7 +2,7 @@
 title: "How Platform IP Policies Are Evolving"
 description: "Platforms are moving toward structured rights portals, trusted reporting, transparency, and stronger repeat-abuse controls."
 date: "2026-08-10"
-category: "Platform Governance"
+category: "Platform Policy"
 author: "DMCA Vision Research"
 ---
 

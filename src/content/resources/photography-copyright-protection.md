@@ -2,7 +2,7 @@
 title: "Copyright Protection for Photographers"
 description: "Practical steps photographers can use to document ownership, manage licenses, monitor reuse, and prepare infringement reports."
 date: "2026-08-06"
-category: "Photography"
+category: "Copyright"
 author: "DMCA Vision Editorial Team"
 ---
 

@@ -2,7 +2,7 @@
 title: "Understanding Online Impersonation Risks"
 description: "Learn how impersonation accounts and domains create customer risk and how organizations can structure an effective response."
 date: "2026-08-13"
-category: "Impersonation"
+category: "Domain & Impersonation"
 author: "DMCA Vision Editorial Team"
 ---
 

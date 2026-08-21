@@ -2,7 +2,7 @@
 title: "The Role of Human Review in Automated Enforcement"
 description: "Automation can scale detection and evidence collection, but accountable human judgment remains essential for enforcement decisions."
 date: "2026-08-08"
-category: "Responsible Automation"
+category: "AI & Automation"
 author: "DMCA Vision Research"
 ---
 

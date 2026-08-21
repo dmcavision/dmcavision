@@ -2,7 +2,7 @@
 title: "The Rise of Online Counterfeit Networks"
 description: "Counterfeit activity increasingly operates across linked accounts, storefronts, platforms, and infrastructure rather than isolated listings."
 date: "2026-08-18"
-category: "Counterfeit Intelligence"
+category: "Counterfeit & Global Commerce"
 author: "DMCA Vision Research"
 featured: false
 ---

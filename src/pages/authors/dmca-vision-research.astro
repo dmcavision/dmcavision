@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CTABox from '../../components/CTABox.astro';
+
+const title = 'DMCA Vision Research | Digital IP Expertise';
+const description = 'Meet the DMCA Vision research and editorial organization covering copyright, brand protection, digital evidence, platform policy, and online enforcement.';
+const canonical = 'https://dmcavision.com/authors/dmca-vision-research/';
+const expertise = [
+  'Copyright and DMCA enforcement',
+  'Trademark and brand protection',
+  'Digital evidence and case intelligence',
+  'Platform and marketplace policy',
+  'AI-assisted monitoring and responsible automation',
+  'Global rights operations'
+];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: 'DMCA Vision Research',
+  description,
+  url: canonical,
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'DMCA Vision Research',
+    parentOrganization: { '@type': 'Organization', name: 'DMCA Vision LLC', url: 'https://dmcavision.com/' },
+    url: canonical,
+    logo: 'https://dmcavision.com/logo.svg',
+    knowsAbout: expertise
+  }
+};
+---
+
+<Layout {title} {description} {canonical} structuredData={schema}>
+  <Header />
+  <main id="main-content" class="content-main">
+    <section class="content-list-hero"><div class="container"><span class="section-kicker light-kicker">Research and editorial authority</span><h1>DMCA Vision Research</h1><p>Practical analysis and structured guidance for organizations protecting intellectual property, digital assets, and brand trust online.</p></div></section>
+    <section class="content-list-section"><div class="container authority-profile"><article><span class="content-label">DMCA Vision LLC</span><h2>Evidence-led digital protection expertise</h2><p>DMCA Vision Research is the research and editorial organization of DMCA Vision LLC. It develops practical resources and industry analysis covering online copyright enforcement, trademark protection, digital evidence, platform governance, and technology-enabled rights operations.</p><p>Published materials are designed to help rights holders understand operational frameworks and prepare more consistent review workflows. They provide general information and do not replace advice from qualified legal counsel for a specific matter.</p><h3>Areas of expertise</h3><ul class="expertise-grid">{expertise.map((area) => <li>{area}</li>)}</ul><div class="profile-actions"><a class="button" href="/insights/">Explore Insights</a><a class="button button-secondary" href="/resources/">Browse Resources</a></div></article><CTABox /></div></section>
+  </main>
+  <Footer />
+</Layout>

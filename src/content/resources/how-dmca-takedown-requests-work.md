@@ -2,7 +2,7 @@
 title: "How DMCA Takedown Requests Work"
 description: "A practical overview of the DMCA notice process, required information, platform review, and possible counter-notices."
 date: "2026-08-20"
-category: "DMCA"
+category: "DMCA & Takedowns"
 author: "DMCA Vision Editorial Team"
 ---
 

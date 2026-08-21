@@ -2,7 +2,7 @@
 title: "Evidence Intelligence in Digital Enforcement"
 description: "How structured evidence transforms screenshots and URLs into connected intelligence for faster, more consistent enforcement."
 date: "2026-08-16"
-category: "Evidence Intelligence"
+category: "Evidence & Intelligence"
 author: "DMCA Vision Research"
 featured: false
 ---

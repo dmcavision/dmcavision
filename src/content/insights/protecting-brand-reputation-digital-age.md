@@ -2,7 +2,7 @@
 title: "Protecting Brand Reputation in the Digital Age"
 description: "Digital reputation protection requires coordinated action across impersonation, counterfeits, misinformation, and customer communications."
 date: "2026-08-13"
-category: "Brand Reputation"
+category: "Brand Risk"
 author: "DMCA Vision Research"
 featured: false
 ---

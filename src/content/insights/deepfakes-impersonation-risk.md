@@ -2,7 +2,7 @@
 title: "Deepfakes, Synthetic Media, and Impersonation Risk"
 description: "Synthetic voice, video, and imagery are changing how organizations detect and respond to digital impersonation."
 date: "2026-07-29"
-category: "Synthetic Media"
+category: "Brand Risk"
 author: "DMCA Vision Research"
 ---
 

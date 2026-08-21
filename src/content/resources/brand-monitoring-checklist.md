@@ -2,7 +2,7 @@
 title: "Online Brand Monitoring Checklist"
 description: "Use a structured checklist to define coverage, risk signals, review standards, and escalation paths for brand monitoring."
 date: "2026-08-02"
-category: "Brand Monitoring"
+category: "Program Management"
 author: "DMCA Vision Editorial Team"
 ---
 

@@ -2,7 +2,7 @@
 title: "Protecting Software Against Online Piracy"
 description: "A practical framework for documenting software rights and responding to unauthorized downloads, keys, and modified distributions."
 date: "2026-08-04"
-category: "Software Protection"
+category: "Copyright"
 author: "DMCA Vision Editorial Team"
 ---
 

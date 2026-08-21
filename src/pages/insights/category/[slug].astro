@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import RelatedResources from '../../../components/RelatedResources.astro';
+import CTABox from '../../../components/CTABox.astro';
+import { INSIGHT_CATEGORIES, type CategoryDefinition } from '../../../lib/contentArchitecture';
+
+export function getStaticPaths() {
+  return INSIGHT_CATEGORIES.map((category) => ({ params: { slug: category.slug }, props: { category } }));
+}
+
+interface Props { category: CategoryDefinition; }
+const { category } = Astro.props;
+const allInsights = await getCollection('insights');
+const resources = await getCollection('resources');
+const articles = allInsights.filter((article) => article.data.category === category.name).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const title = `${category.name} Insights | DMCA Vision`;
+const description = category.description;
+const canonical = `https://dmcavision.com/insights/category/${category.slug}/`;
+const schemas = [
+  { '@context': 'https://schema.org', '@type': 'CollectionPage', name: `${category.name} Insights`, description, url: canonical },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://dmcavision.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Insights', item: 'https://dmcavision.com/insights/' },
+    { '@type': 'ListItem', position: 3, name: category.name, item: canonical }
+  ] },
+  { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: articles.map((article, index) => ({ '@type': 'ListItem', position: index + 1, name: article.data.title, url: `https://dmcavision.com/insights/${article.id}/` })) }
+];
+---
+
+<Layout {title} {description} {canonical} structuredData={schemas}>
+  <Header />
+  <main id="main-content" class="content-main">
+    <section class="content-list-hero"><div class="container"><nav class="breadcrumbs hub-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/insights/">Insights</a></nav><span class="section-kicker light-kicker">Insights category</span><h1>{category.name}</h1><p>{description}</p></div></section>
+    <section class="content-list-section" aria-labelledby="category-articles"><div class="container"><div class="content-section-heading"><span class="section-kicker">Authority library</span><h2 id="category-articles">Latest in {category.name}</h2></div><div class="article-grid">{articles.map((article) => <ArticleCard {article} />)}</div><RelatedResources {resources} sourceCategory={category.name} sourceCollection="insights" /><CTABox /></div></section>
+  </main>
+  <Footer />
+</Layout>

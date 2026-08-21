@@ -2,7 +2,7 @@
 title: "A Complete Guide to Online Copyright Enforcement"
 description: "Build a repeatable workflow for detecting, validating, documenting, reporting, and monitoring online copyright infringement."
 date: "2026-08-18"
-category: "Enforcement"
+category: "DMCA & Takedowns"
 author: "DMCA Vision Editorial Team"
 ---
 

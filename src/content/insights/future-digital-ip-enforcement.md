@@ -2,7 +2,7 @@
 title: "The Future of Digital Intellectual Property Enforcement"
 description: "How automation, evidence quality, platform accountability, and human judgment are shaping the next generation of IP enforcement."
 date: "2026-08-21"
-category: "Industry Outlook"
+category: "Enforcement Strategy"
 author: "DMCA Vision Research"
 featured: true
 ---

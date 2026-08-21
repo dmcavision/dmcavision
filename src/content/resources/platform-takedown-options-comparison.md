@@ -2,7 +2,7 @@
 title: "Comparing Platform, Hosting, and Search Takedown Options"
 description: "Learn how different online enforcement routes affect source content, account visibility, hosting, and search discovery."
 date: "2026-08-09"
-category: "Takedown Strategy"
+category: "Platform & Marketplace Enforcement"
 author: "DMCA Vision Editorial Team"
 ---
 

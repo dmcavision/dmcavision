@@ -2,7 +2,7 @@
 title: "Applying Threat Intelligence to IP Protection Operations"
 description: "Threat-intelligence methods can help rights holders understand repeat actors, infrastructure, behavior, and likely next moves."
 date: "2026-08-01"
-category: "Threat Intelligence"
+category: "Evidence & Intelligence"
 author: "DMCA Vision Research"
 ---
 

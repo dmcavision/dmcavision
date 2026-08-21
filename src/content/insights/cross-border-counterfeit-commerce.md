@@ -2,7 +2,7 @@
 title: "Cross-Border Ecommerce and Counterfeit Risk"
 description: "Why global storefronts, fulfillment routes, and localized accounts make counterfeit enforcement a connected intelligence problem."
 date: "2026-08-09"
-category: "Global Commerce"
+category: "Counterfeit & Global Commerce"
 author: "DMCA Vision Research"
 ---
 

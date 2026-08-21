@@ -1,17 +1,22 @@
 ---
 interface Props {
   author: string;
+  authorProfile?: string;
   date: Date;
+  lastUpdated?: Date;
+  reviewedBy?: string;
   readingTime: string;
 }
 
 import { formatArticleDate } from '../lib/content';
-const { author, date, readingTime } = Astro.props;
+const { author, authorProfile, date, lastUpdated, reviewedBy, readingTime } = Astro.props;
 ---
 
 <div class="article-meta" aria-label="Article information">
-  <span>By {author}</span>
+  <span>By {authorProfile ? <a href={authorProfile}>{author}</a> : author}</span>
   <span aria-hidden="true"></span>
   <time datetime={date.toISOString()}>{formatArticleDate(date)}</time>
+  {lastUpdated && <><span aria-hidden="true"></span><span>Updated <time datetime={lastUpdated.toISOString()}>{formatArticleDate(lastUpdated)}</time></span></>}
+  {reviewedBy && <><span aria-hidden="true"></span><span>Reviewed by {reviewedBy}</span></>}
   <span aria-hidden="true"></span><span>{readingTime}</span>
 </div>

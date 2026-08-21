@@ -2,7 +2,7 @@
 title: "Why Companies Need Proactive IP Enforcement"
 description: "Why waiting for customer complaints leaves digital risk unmanaged and how proactive enforcement improves visibility and response."
 date: "2026-08-19"
-category: "IP Strategy"
+category: "Enforcement Strategy"
 author: "DMCA Vision Research"
 featured: false
 ---

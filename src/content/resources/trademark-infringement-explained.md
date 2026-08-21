@@ -2,7 +2,7 @@
 title: "Trademark Infringement Explained"
 description: "Understand how online trademark misuse can create confusion and how rights holders can organize an initial review."
 date: "2026-08-16"
-category: "Trademark"
+category: "Trademark & Brand Protection"
 author: "DMCA Vision Editorial Team"
 ---
 

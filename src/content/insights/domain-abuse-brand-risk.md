@@ -2,7 +2,7 @@
 title: "Domain Abuse as a Strategic Brand Risk"
 description: "Deceptive domains increasingly connect impersonation, phishing, counterfeit commerce, advertising, and reputation harm."
 date: "2026-08-02"
-category: "Domain Intelligence"
+category: "Brand Risk"
 author: "DMCA Vision Research"
 ---
 

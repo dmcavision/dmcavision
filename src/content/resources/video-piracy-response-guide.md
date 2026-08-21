@@ -2,7 +2,7 @@
 title: "Online Video Piracy Response Guide"
 description: "Organize evidence and enforcement options for unauthorized streams, uploads, clips, and redistributed video content."
 date: "2026-08-05"
-category: "Video Protection"
+category: "Copyright"
 author: "DMCA Vision Editorial Team"
 ---
 

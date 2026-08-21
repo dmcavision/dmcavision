@@ -2,7 +2,7 @@
 title: "Marketplace Intellectual Property Reporting Guide"
 description: "Prepare accurate marketplace reports for copyright, trademark, counterfeit, and impersonation concerns."
 date: "2026-08-08"
-category: "Marketplaces"
+category: "Platform & Marketplace Enforcement"
 author: "DMCA Vision Editorial Team"
 ---
 

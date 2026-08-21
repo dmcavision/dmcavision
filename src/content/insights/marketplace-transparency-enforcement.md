@@ -2,7 +2,7 @@
 title: "Marketplace Transparency and the Future of Enforcement"
 description: "Better seller identity, listing history, and outcome transparency could make online enforcement faster and more durable."
 date: "2026-08-04"
-category: "Marketplace Policy"
+category: "Platform Policy"
 author: "DMCA Vision Research"
 ---
 

@@ -2,7 +2,7 @@
 title: "What to Do When Your Website Content Is Copied"
 description: "A step-by-step response for copied website text, photographs, graphics, product pages, and other original content."
 date: "2026-08-07"
-category: "Content Protection"
+category: "Copyright"
 author: "DMCA Vision Editorial Team"
 ---
 

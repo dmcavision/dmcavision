@@ -2,7 +2,7 @@
 title: "Managing Repeat Online Infringement"
 description: "Connect recurring URLs, accounts, domains, and outcomes into a consistent repeat-infringer case strategy."
 date: "2026-08-01"
-category: "Case Management"
+category: "Program Management"
 author: "DMCA Vision Editorial Team"
 ---
 

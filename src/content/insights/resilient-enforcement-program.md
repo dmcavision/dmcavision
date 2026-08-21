@@ -2,7 +2,7 @@
 title: "Designing a Resilient Digital Enforcement Program"
 description: "Resilient programs maintain quality through platform change, volume spikes, new threats, and evolving business priorities."
 date: "2026-07-28"
-category: "Operating Model"
+category: "Enforcement Strategy"
 author: "DMCA Vision Research"
 ---
 

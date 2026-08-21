@@ -2,7 +2,7 @@
 title: "When to Use a Cease-and-Desist Letter for Online Infringement"
 description: "Understand where direct outreach may fit within an online enforcement strategy and what should be reviewed before sending it."
 date: "2026-08-10"
-category: "Enforcement"
+category: "DMCA & Takedowns"
 author: "DMCA Vision Editorial Team"
 ---
 

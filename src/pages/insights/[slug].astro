@@ -5,8 +5,10 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ArticleHeader from '../../components/ArticleHeader.astro';
 import CTABox from '../../components/CTABox.astro';
-import RelatedArticles from '../../components/RelatedArticles.astro';
+import RelatedInsights from '../../components/RelatedInsights.astro';
+import RelatedResources from '../../components/RelatedResources.astro';
 import { calculateReadingTime } from '../../lib/content';
+import { getCategoryDefinition } from '../../lib/contentArchitecture';
 
 export async function getStaticPaths() {
   const articles = await getCollection('insights');
@@ -17,20 +19,26 @@ interface Props { article: CollectionEntry<'insights'>; }
 const { article } = Astro.props;
 const { Content } = await render(article);
 const articles = await getCollection('insights');
-const { title: articleTitle, description, category, author, date, image } = article.data;
+const resources = await getCollection('resources');
+const { title: articleTitle, description, seoTitle, seoDescription, category, author, authorProfile, reviewedBy, date, lastUpdated, image } = article.data;
 const readingTime = calculateReadingTime(article.body);
-const title = `${articleTitle} | DMCA Vision`;
+const title = seoTitle ?? `${articleTitle} | DMCA Vision`;
+const metaDescription = seoDescription ?? description;
 const canonical = `https://dmcavision.com/insights/${article.id}/`;
+const categoryDefinition = getCategoryDefinition('insights', category)!;
+const categoryUrl = `https://dmcavision.com/insights/category/${categoryDefinition.slug}/`;
+const authorUrl = new URL(authorProfile, 'https://dmcavision.com/').href;
 const schemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: articleTitle,
-    description,
+    description: metaDescription,
     datePublished: date.toISOString(),
-    dateModified: date.toISOString(),
+    dateModified: (lastUpdated ?? date).toISOString(),
     mainEntityOfPage: canonical,
-    author: { '@type': 'Organization', name: author },
+    author: { '@type': 'Organization', name: author, url: authorUrl },
+    ...(reviewedBy ? { reviewedBy: { '@type': 'Organization', name: reviewedBy } } : {}),
     publisher: { '@type': 'Organization', name: 'DMCA Vision LLC', logo: { '@type': 'ImageObject', url: 'https://dmcavision.com/logo.svg' } }
   },
   {
@@ -39,20 +47,22 @@ const schemas = [
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://dmcavision.com/' },
       { '@type': 'ListItem', position: 2, name: 'Insights', item: 'https://dmcavision.com/insights/' },
-      { '@type': 'ListItem', position: 3, name: articleTitle, item: canonical }
+      { '@type': 'ListItem', position: 3, name: category, item: categoryUrl },
+      { '@type': 'ListItem', position: 4, name: articleTitle, item: canonical }
     ]
   }
 ];
 ---
 
-<Layout {title} {description} {canonical} image={image} ogType="article" structuredData={schemas}>
+<Layout {title} description={metaDescription} {canonical} image={image} ogType="article" structuredData={schemas}>
   <Header />
   <main id="main-content" class="content-main article-page">
-    <section class="article-header-section"><ArticleHeader title={articleTitle} {description} {category} {author} {date} {readingTime} {image} collection="Insights" /></section>
+    <section class="article-header-section"><ArticleHeader title={articleTitle} {description} {category} {author} {authorProfile} {reviewedBy} {date} {lastUpdated} {readingTime} {image} collection="Insights" /></section>
     <div class="container article-layout">
       <article class="prose"><Content /></article>
       <CTABox />
-      <RelatedArticles {articles} currentId={article.id} {category} />
+      <RelatedInsights insights={articles} currentId={article.id} sourceCategory={category} sourceCollection="insights" />
+      <RelatedResources {resources} sourceCategory={category} sourceCollection="insights" />
     </div>
   </main>
   <Footer />

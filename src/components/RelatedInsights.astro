@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
+import { insightCategoryRelations, resourceToInsightRelations, rankByCategory } from '../lib/contentArchitecture';
+
+interface Props {
+  insights: CollectionEntry<'insights'>[];
+  currentId?: string;
+  sourceCategory: string;
+  sourceCollection: 'insights' | 'resources';
+}
+
+const { insights, currentId, sourceCategory, sourceCollection } = Astro.props;
+const categoryOrder = sourceCollection === 'insights'
+  ? insightCategoryRelations[sourceCategory] ?? [sourceCategory]
+  : resourceToInsightRelations[sourceCategory] ?? [];
+const related = rankByCategory(
+  insights.filter((insight) => insight.id !== currentId && categoryOrder.includes(insight.data.category)),
+  categoryOrder
+).slice(0, 3);
+---
+
+{related.length > 0 && (
+  <section class="related-articles" aria-labelledby="related-insights-title">
+    <div class="content-section-heading"><span class="section-kicker">Continue reading</span><h2 id="related-insights-title">Related insights</h2></div>
+    <div class="related-grid three-grid">{related.map((article) => <ArticleCard {article} />)}</div>
+  </section>
+)}

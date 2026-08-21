@@ -2,7 +2,7 @@
 title: "Understanding DMCA Counter-Notices"
 description: "Learn what a counter-notice means, why it requires careful review, and how to preserve the complete case record."
 date: "2026-07-31"
-category: "DMCA"
+category: "DMCA & Takedowns"
 author: "DMCA Vision Editorial Team"
 ---
 

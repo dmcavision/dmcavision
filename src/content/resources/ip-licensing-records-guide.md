@@ -2,7 +2,7 @@
 title: "How to Organize Intellectual Property Licensing Records"
 description: "Build a usable licensing record that helps teams distinguish authorized activity from potential infringement."
 date: "2026-07-30"
-category: "Rights Management"
+category: "Copyright"
 author: "DMCA Vision Editorial Team"
 ---
 

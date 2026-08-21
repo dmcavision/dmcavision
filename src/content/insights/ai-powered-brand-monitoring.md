@@ -2,7 +2,7 @@
 title: "AI-Powered Brand Monitoring and Online Protection"
 description: "Explore where AI improves brand monitoring, where it creates risk, and how human validation keeps enforcement accurate."
 date: "2026-08-20"
-category: "AI and Monitoring"
+category: "AI & Automation"
 author: "DMCA Vision Research"
 featured: false
 ---

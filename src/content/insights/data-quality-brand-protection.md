@@ -2,7 +2,7 @@
 title: "Why Data Quality Determines Brand Protection Performance"
 description: "Reliable rights, asset, seller, evidence, and outcome data are the foundation of accurate monitoring and enforcement."
 date: "2026-08-07"
-category: "Data Strategy"
+category: "Evidence & Intelligence"
 author: "DMCA Vision Research"
 ---
 

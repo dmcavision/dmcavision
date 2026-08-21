@@ -2,7 +2,7 @@
 title: "Building a Modern Brand Protection Strategy"
 description: "A modern strategy connects rights, monitoring, evidence, enforcement, customer protection, and measurable outcomes."
 date: "2026-08-17"
-category: "Brand Strategy"
+category: "Enforcement Strategy"
 author: "DMCA Vision Research"
 featured: false
 ---

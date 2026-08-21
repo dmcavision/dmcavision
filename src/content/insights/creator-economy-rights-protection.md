@@ -2,7 +2,7 @@
 title: "Rights Protection in the Creator Economy"
 description: "Creators need scalable ownership, licensing, monitoring, and enforcement practices as content moves across platforms and partnerships."
 date: "2026-08-03"
-category: "Creator Economy"
+category: "Copyright & Creator Economy"
 author: "DMCA Vision Research"
 ---
 

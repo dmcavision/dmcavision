@@ -2,7 +2,7 @@
 title: "Technology Behind Global Takedown Operations"
 description: "An inside view of the data, workflow, and quality controls required to coordinate high-volume enforcement across platforms."
 date: "2026-08-14"
-category: "Enforcement Technology"
+category: "Rights Operations"
 author: "DMCA Vision Research"
 featured: false
 ---

@@ -2,7 +2,7 @@
 title: "Protecting Your Brand Against Counterfeit Products"
 description: "Develop a risk-based process for identifying counterfeit listings, preserving evidence, and coordinating marketplace enforcement."
 date: "2026-08-15"
-category: "Counterfeit Protection"
+category: "Trademark & Brand Protection"
 author: "DMCA Vision Editorial Team"
 ---
 

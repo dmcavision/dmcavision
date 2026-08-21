@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ResourceCard from '../../../components/ResourceCard.astro';
+import RelatedInsights from '../../../components/RelatedInsights.astro';
+import RelatedResources from '../../../components/RelatedResources.astro';
+import CTABox from '../../../components/CTABox.astro';
+import { RESOURCE_CATEGORIES, type CategoryDefinition } from '../../../lib/contentArchitecture';
+
+export function getStaticPaths() {
+  return RESOURCE_CATEGORIES.map((category) => ({ params: { slug: category.slug }, props: { category } }));
+}
+
+interface Props { category: CategoryDefinition; }
+const { category } = Astro.props;
+const allResources = await getCollection('resources');
+const insights = await getCollection('insights');
+const resources = allResources.filter((resource) => resource.data.category === category.name).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const title = `${category.name} Resources | DMCA Vision`;
+const description = category.description;
+const canonical = `https://dmcavision.com/resources/category/${category.slug}/`;
+const schemas = [
+  { '@context': 'https://schema.org', '@type': 'CollectionPage', name: `${category.name} Resources`, description, url: canonical },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://dmcavision.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Resources', item: 'https://dmcavision.com/resources/' },
+    { '@type': 'ListItem', position: 3, name: category.name, item: canonical }
+  ] },
+  { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: resources.map((resource, index) => ({ '@type': 'ListItem', position: index + 1, name: resource.data.title, url: `https://dmcavision.com/resources/${resource.id}/` })) }
+];
+---
+
+<Layout {title} {description} {canonical} structuredData={schemas}>
+  <Header />
+  <main id="main-content" class="content-main">
+    <section class="content-list-hero"><div class="container"><nav class="breadcrumbs hub-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/resources/">Resources</a></nav><span class="section-kicker light-kicker">Resource category</span><h1>{category.name}</h1><p>{description}</p></div></section>
+    <section class="content-list-section" aria-labelledby="category-resources"><div class="container"><div class="content-section-heading"><span class="section-kicker">Practical guidance</span><h2 id="category-resources">Resources for {category.name}</h2></div><div class="resource-grid">{resources.map((resource) => <ResourceCard {resource} />)}</div><RelatedInsights {insights} sourceCategory={category.name} sourceCollection="resources" /><RelatedResources resources={allResources} sourceCategory={category.name} sourceCollection="resources" excludeCategory={category.name} /><CTABox /></div></section>
+  </main>
+  <Footer />
+</Layout>

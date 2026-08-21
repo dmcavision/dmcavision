@@ -2,7 +2,7 @@
 title: "Where Trust and Safety Meets Intellectual Property Enforcement"
 description: "Counterfeits, impersonation, fraud, and content abuse increasingly require shared workflows across IP and trust-and-safety teams."
 date: "2026-08-06"
-category: "Trust and Safety"
+category: "Platform Policy"
 author: "DMCA Vision Research"
 ---
 

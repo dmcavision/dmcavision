@@ -2,7 +2,7 @@
 title: "Regulatory Pressure and Online Platform Accountability"
 description: "Growing expectations around transparency, seller verification, appeals, and systemic risk are reshaping platform operations."
 date: "2026-07-31"
-category: "Digital Regulation"
+category: "Platform Policy"
 author: "DMCA Vision Research"
 ---
 

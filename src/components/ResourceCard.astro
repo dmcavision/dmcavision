@@ -2,18 +2,20 @@
 import type { CollectionEntry } from 'astro:content';
 import ContentImage from './ContentImage.astro';
 import { calculateReadingTime, formatArticleDate } from '../lib/content';
+import { getCategoryDefinition } from '../lib/contentArchitecture';
 
 interface Props { resource: CollectionEntry<'resources'>; }
 const { resource } = Astro.props;
 const { title, description, category, date, image } = resource.data;
 const readingTime = calculateReadingTime(resource.body);
 const href = `/resources/${resource.id}/`;
+const categoryHref = `/resources/category/${getCategoryDefinition('resources', category)?.slug}/`;
 ---
 
 <article class="resource-card">
   <ContentImage {image} alt={title} class="resource-card-media" />
   <div class="resource-card-body">
-    <div class="resource-taxonomy"><span>Resource</span><span>{category}</span></div>
+    <div class="resource-taxonomy"><span>Resource</span><a href={categoryHref}>{category}</a></div>
     <h2><a href={href}>{title}</a></h2>
     <p>{description}</p>
     <div class="card-meta"><time datetime={date.toISOString()}>{formatArticleDate(date, true)}</time><span>{readingTime}</span></div>

@@ -2,7 +2,7 @@
 title: "Measuring the ROI of Online IP Enforcement"
 description: "Move beyond takedown counts by connecting enforcement activity to exposure, operational cost, customer risk, and durable outcomes."
 date: "2026-08-05"
-category: "Program Economics"
+category: "Enforcement Strategy"
 author: "DMCA Vision Research"
 ---
 

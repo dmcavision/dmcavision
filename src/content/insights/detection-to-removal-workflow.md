@@ -2,7 +2,7 @@
 title: "From Detection to Removal: The Enforcement Workflow"
 description: "Follow the operational stages that transform a monitoring signal into validated evidence, platform action, and measurable follow-up."
 date: "2026-08-12"
-category: "Enforcement Operations"
+category: "Rights Operations"
 author: "DMCA Vision Research"
 featured: false
 ---

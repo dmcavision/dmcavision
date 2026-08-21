@@ -2,7 +2,7 @@
 title: "The Changing Landscape of Online Copyright Abuse"
 description: "Copyright abuse is adapting to short-form media, decentralized distribution, generative tools, and fast-moving creator economies."
 date: "2026-08-15"
-category: "Copyright Trends"
+category: "Copyright & Creator Economy"
 author: "DMCA Vision Research"
 featured: false
 ---

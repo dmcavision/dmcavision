@@ -2,7 +2,7 @@
 title: "Generative AI and the New Copyright Risk Landscape"
 description: "How generative systems are changing content provenance, monitoring, licensing questions, and copyright enforcement operations."
 date: "2026-08-11"
-category: "AI and Copyright"
+category: "AI & Automation"
 author: "DMCA Vision Research"
 ---
 

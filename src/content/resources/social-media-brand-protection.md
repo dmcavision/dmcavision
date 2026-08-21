@@ -2,7 +2,7 @@
 title: "Social Media Brand Protection Guide"
 description: "A practical framework for monitoring impersonation, copied content, fraudulent promotions, and trademark misuse on social platforms."
 date: "2026-08-14"
-category: "Social Media"
+category: "Trademark & Brand Protection"
 author: "DMCA Vision Editorial Team"
 ---
 

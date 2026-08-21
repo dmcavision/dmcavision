@@ -2,7 +2,7 @@
 title: "Domain Name Abuse and Brand Protection"
 description: "Understand typosquatting, deceptive domains, cloned websites, and the evidence needed for a domain abuse review."
 date: "2026-08-03"
-category: "Domain Protection"
+category: "Domain & Impersonation"
 author: "DMCA Vision Editorial Team"
 ---
 
