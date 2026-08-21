@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import CTABox from '../../components/CTABox.astro';
+
+const title = 'Insights | DMCA Vision';
+const description = 'Knowledge and updates from DMCA Vision covering copyright protection, trademark enforcement, digital evidence, and online infringement.';
+const canonical = 'https://dmcavision.com/insights/';
+const articles = (await getCollection('insights')).sort((a, b) =>
+  Number(b.data.featured) - Number(a.data.featured) || b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'DMCA Vision Insights',
+    description,
+    url: canonical
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: articles.map((article, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `https://dmcavision.com/insights/${article.id}/`,
+      name: article.data.title
+    }))
+  }
+];
+---
+
+<Layout {title} {description} {canonical} structuredData={schema}>
+  <Header />
+  <main id="main-content" class="content-main">
+    <section class="content-list-hero">
+      <div class="container">
+        <span class="section-kicker light-kicker">Knowledge center</span>
+        <h1>Insights</h1>
+        <p>{description}</p>
+      </div>
+    </section>
+    <section class="content-list-section" aria-labelledby="latest-insights">
+      <div class="container">
+        <div class="content-section-heading">
+          <span class="section-kicker">Research and guidance</span>
+          <h2 id="latest-insights">Latest insights</h2>
+        </div>
+        <div class="article-grid">{articles.map((article, index) => <ArticleCard {article} featured={index === 0 && article.data.featured} />)}</div>
+        <CTABox />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

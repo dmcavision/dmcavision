@@ -1,0 +1,52 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ContentImage from '../../components/ContentImage.astro';
+import CTABox from '../../components/CTABox.astro';
+
+export async function getStaticPaths() {
+  const resources = await getCollection('resources');
+  return resources.map((resource) => ({ params: { slug: resource.id }, props: { resource } }));
+}
+
+interface Props { resource: CollectionEntry<'resources'>; }
+const { resource } = Astro.props;
+const { Content } = await render(resource);
+const { title: resourceTitle, description, type, category, image } = resource.data;
+const title = `${resourceTitle} | DMCA Vision`;
+const canonical = `https://dmcavision.com/resources/${resource.id}/`;
+const resourceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'DigitalDocument',
+  name: resourceTitle,
+  description,
+  url: canonical,
+  genre: type,
+  about: category,
+  publisher: { '@type': 'Organization', name: 'DMCA Vision LLC', url: 'https://dmcavision.com/' }
+};
+---
+
+<Layout {title} {description} {canonical} structuredData={resourceSchema}>
+  <Header />
+  <main id="main-content" class="content-main resource-page">
+    <section class="resource-header-section">
+      <div class="container resource-header">
+        <div>
+          <a class="content-back-link" href="/resources/" aria-label="Back to all Resources">← All Resources</a>
+          <div class="resource-taxonomy"><span>{type}</span><span>{category}</span></div>
+          <h1>{resourceTitle}</h1>
+          <p>{description}</p>
+        </div>
+        <ContentImage {image} class="resource-hero-media" eager />
+      </div>
+    </section>
+    <div class="container article-layout">
+      <article class="prose resource-prose"><Content /></article>
+      <CTABox />
+    </div>
+  </main>
+  <Footer />
+</Layout>

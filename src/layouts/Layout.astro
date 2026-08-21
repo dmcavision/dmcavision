@@ -5,10 +5,22 @@ interface Props {
   title: string;
   description: string;
   canonical?: string;
+  image?: string;
+  ogType?: 'website' | 'article';
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, canonical = 'https://dmcavision.com/' } = Astro.props;
+const {
+  title,
+  description,
+  canonical = 'https://dmcavision.com/',
+  image = '/og-image.svg',
+  ogType = 'website',
+  structuredData = []
+} = Astro.props;
 const siteRoot = 'https://dmcavision.com/';
+const socialImage = new URL(image, siteRoot).href;
+const additionalSchemas = Array.isArray(structuredData) ? structuredData : [structuredData];
 const organization = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -44,18 +56,21 @@ const website = {
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${siteRoot}og-image.svg`} />
+    <meta property="og:image" content={socialImage} />
     <meta property="og:site_name" content="DMCA Vision" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${siteRoot}og-image.svg`} />
+    <meta name="twitter:image" content={socialImage} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organization)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
+    {additionalSchemas.map((schema) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>

@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import CTABox from '../../components/CTABox.astro';
+
+const title = 'Resources | DMCA Vision';
+const description = 'Practical checklists and guides for copyright protection, trademark enforcement, and digital evidence collection.';
+const canonical = 'https://dmcavision.com/resources/';
+const resources = (await getCollection('resources')).sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'DMCA Vision Resources',
+    description,
+    url: canonical
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    numberOfItems: resources.length,
+    itemListElement: resources.map((resource, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `https://dmcavision.com/resources/${resource.id}/`,
+      name: resource.data.title
+    }))
+  }
+];
+---
+
+<Layout {title} {description} {canonical} structuredData={schema}>
+  <Header />
+  <main id="main-content" class="content-main">
+    <section class="content-list-hero">
+      <div class="container">
+        <span class="section-kicker light-kicker">Practical library</span>
+        <h1>Resources</h1>
+        <p>Structured checklists and guidance to help rights holders prepare clearer online infringement reviews.</p>
+      </div>
+    </section>
+    <section class="content-list-section" aria-labelledby="resource-library">
+      <div class="container">
+        <div class="content-section-heading">
+          <span class="section-kicker">Tools for rights holders</span>
+          <h2 id="resource-library">Resource library</h2>
+        </div>
+        <div class="resource-grid">{resources.map((resource) => <ResourceCard {resource} />)}</div>
+        <CTABox />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

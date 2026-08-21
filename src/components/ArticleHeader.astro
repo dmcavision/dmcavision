@@ -1,0 +1,26 @@
+---
+import ArticleMeta from './ArticleMeta.astro';
+import ContentImage from './ContentImage.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  author: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  readingTime?: string;
+  heroImage: { src: string; alt: string };
+}
+
+const { title, description, category, author, pubDate, updatedDate, readingTime, heroImage } = Astro.props;
+---
+
+<header class="article-header container">
+  <a class="content-back-link" href="/insights/" aria-label="Back to all Insights">← All Insights</a>
+  <span class="content-label">{category}</span>
+  <h1>{title}</h1>
+  <p>{description}</p>
+  <ArticleMeta {author} {pubDate} {updatedDate} {readingTime} />
+  <ContentImage image={heroImage} class="article-hero-media" eager />
+</header>

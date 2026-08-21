@@ -1,0 +1,52 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleHeader from '../../components/ArticleHeader.astro';
+import CTABox from '../../components/CTABox.astro';
+import RelatedArticles from '../../components/RelatedArticles.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('insights');
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+}
+
+interface Props { article: CollectionEntry<'insights'>; }
+const { article } = Astro.props;
+const { Content } = await render(article);
+const articles = await getCollection('insights');
+const { title: articleTitle, description, category, author, pubDate, updatedDate, readingTime, heroImage } = article.data;
+const title = `${articleTitle} | DMCA Vision`;
+const canonical = `https://dmcavision.com/insights/${article.id}/`;
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: articleTitle,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  mainEntityOfPage: canonical,
+  author: { '@type': 'Organization', name: 'DMCA Vision LLC', url: 'https://dmcavision.com/' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'DMCA Vision LLC',
+    logo: { '@type': 'ImageObject', url: 'https://dmcavision.com/logo.svg' }
+  }
+};
+---
+
+<Layout {title} {description} {canonical} ogType="article" structuredData={articleSchema}>
+  <Header />
+  <main id="main-content" class="content-main article-page">
+    <section class="article-header-section">
+      <ArticleHeader title={articleTitle} {description} {category} author={author.name} {pubDate} {updatedDate} {readingTime} {heroImage} />
+    </section>
+    <div class="container article-layout">
+      <article class="prose"><Content /></article>
+      <CTABox />
+      <RelatedArticles {articles} currentId={article.id} {category} />
+    </div>
+  </main>
+  <Footer />
+</Layout>

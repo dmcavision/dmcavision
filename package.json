@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.2.2",
     "resend": "^6.20.0",
     "typescript": "^5.9.2"

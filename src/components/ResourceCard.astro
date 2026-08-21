@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ContentImage from './ContentImage.astro';
+
+interface Props { resource: CollectionEntry<'resources'>; }
+const { resource } = Astro.props;
+const { title, description, type, category, image } = resource.data;
+const action = resource.data.download ? 'Download resource' : 'Read guide';
+const href = resource.data.download ?? `/resources/${resource.id}/`;
+---
+
+<article class="resource-card">
+  <ContentImage {image} class="resource-card-media" />
+  <div class="resource-card-body">
+    <div class="resource-taxonomy"><span>{type}</span><span>{category}</span></div>
+    <h2><a href={href}>{title}</a></h2>
+    <p>{description}</p>
+    <a class="content-action" href={href} aria-label={`${action}: ${title}`}>{action} <span aria-hidden="true">→</span></a>
+  </div>
+</article>
