@@ -1,20 +1,22 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import ContentImage from './ContentImage.astro';
+import { calculateReadingTime, formatArticleDate } from '../lib/content';
 
 interface Props { resource: CollectionEntry<'resources'>; }
 const { resource } = Astro.props;
-const { title, description, type, category, image } = resource.data;
-const action = resource.data.download ? 'Download resource' : 'Read guide';
-const href = resource.data.download ?? `/resources/${resource.id}/`;
+const { title, description, category, date, image } = resource.data;
+const readingTime = calculateReadingTime(resource.body);
+const href = `/resources/${resource.id}/`;
 ---
 
 <article class="resource-card">
-  <ContentImage {image} class="resource-card-media" />
+  <ContentImage {image} alt={title} class="resource-card-media" />
   <div class="resource-card-body">
-    <div class="resource-taxonomy"><span>{type}</span><span>{category}</span></div>
+    <div class="resource-taxonomy"><span>Resource</span><span>{category}</span></div>
     <h2><a href={href}>{title}</a></h2>
     <p>{description}</p>
-    <a class="content-action" href={href} aria-label={`${action}: ${title}`}>{action} <span aria-hidden="true">→</span></a>
+    <div class="card-meta"><time datetime={date.toISOString()}>{formatArticleDate(date, true)}</time><span>{readingTime}</span></div>
+    <a class="content-action" href={href} aria-label={`Read ${title}`}>Read article <span aria-hidden="true">→</span></a>
   </div>
 </article>

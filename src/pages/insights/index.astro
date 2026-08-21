@@ -10,8 +10,9 @@ const title = 'Insights | DMCA Vision';
 const description = 'Knowledge and updates from DMCA Vision covering copyright protection, trademark enforcement, digital evidence, and online infringement.';
 const canonical = 'https://dmcavision.com/insights/';
 const articles = (await getCollection('insights')).sort((a, b) =>
-  Number(b.data.featured) - Number(a.data.featured) || b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  Number(b.data.featured) - Number(a.data.featured) || b.data.date.valueOf() - a.data.date.valueOf()
 );
+const [featuredArticle, ...remainingArticles] = articles;
 const schema = [
   {
     '@context': 'https://schema.org',
@@ -45,11 +46,10 @@ const schema = [
     </section>
     <section class="content-list-section" aria-labelledby="latest-insights">
       <div class="container">
-        <div class="content-section-heading">
-          <span class="section-kicker">Research and guidance</span>
-          <h2 id="latest-insights">Latest insights</h2>
-        </div>
-        <div class="article-grid">{articles.map((article, index) => <ArticleCard {article} featured={index === 0 && article.data.featured} />)}</div>
+        <div class="content-section-heading"><span class="section-kicker">Featured analysis</span><h2 id="latest-insights">Industry perspective</h2></div>
+        {featuredArticle && <div class="article-grid featured-grid"><ArticleCard article={featuredArticle} featured /></div>}
+        <div class="content-section-heading secondary-heading"><span class="section-kicker">Latest thinking</span><h2>More insights</h2></div>
+        <div class="article-grid">{remainingArticles.map((article) => <ArticleCard {article} />)}</div>
         <CTABox />
       </div>
     </section>

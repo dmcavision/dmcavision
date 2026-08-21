@@ -4,14 +4,15 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 
 interface Props {
-  image?: { src: string; alt: string };
+  image?: string;
+  alt: string;
   class?: string;
   eager?: boolean;
 }
 
-const { image, class: className = '', eager = false } = Astro.props;
+const { image, alt, class: className = '', eager = false } = Astro.props;
 const publicRoot = fileURLToPath(new URL('../../public/', import.meta.url));
-const relativePath = image?.src.replace(/^\/+/, '');
+const relativePath = image?.replace(/^\/+/, '');
 const imagePath = relativePath ? resolve(publicRoot, relativePath) : '';
 const hasImage = Boolean(image && imagePath.startsWith(publicRoot) && existsSync(imagePath));
 ---
@@ -19,14 +20,14 @@ const hasImage = Boolean(image && imagePath.startsWith(publicRoot) && existsSync
 <div class:list={['content-media', className, { 'has-image': hasImage }]}>
   {hasImage && image ? (
     <img
-      src={image.src}
-      alt={image.alt}
+      src={image}
+      {alt}
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : 'auto'}
       decoding="async"
     />
   ) : (
-    <div class="content-media-fallback" role="img" aria-label={image?.alt ?? 'DMCA Vision resource'}>
+    <div class="content-media-fallback" role="img" aria-label={alt}>
       <span>DV</span>
       <small>DMCA Vision</small>
     </div>

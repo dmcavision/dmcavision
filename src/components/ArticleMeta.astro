@@ -1,21 +1,17 @@
 ---
 interface Props {
   author: string;
-  pubDate: Date;
-  updatedDate?: Date;
-  readingTime?: string;
+  date: Date;
+  readingTime: string;
 }
 
-const { author, pubDate, updatedDate, readingTime } = Astro.props;
-const formatDate = (date: Date) => new Intl.DateTimeFormat('en-US', {
-  month: 'long', day: 'numeric', year: 'numeric'
-}).format(date);
+import { formatArticleDate } from '../lib/content';
+const { author, date, readingTime } = Astro.props;
 ---
 
 <div class="article-meta" aria-label="Article information">
   <span>By {author}</span>
   <span aria-hidden="true"></span>
-  <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
-  {updatedDate && <><span aria-hidden="true"></span><span>Updated <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time></span></>}
-  {readingTime && <><span aria-hidden="true"></span><span>{readingTime}</span></>}
+  <time datetime={date.toISOString()}>{formatArticleDate(date)}</time>
+  <span aria-hidden="true"></span><span>{readingTime}</span>
 </div>

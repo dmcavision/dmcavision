@@ -1,0 +1,59 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleHeader from '../../components/ArticleHeader.astro';
+import CTABox from '../../components/CTABox.astro';
+import RelatedArticles from '../../components/RelatedArticles.astro';
+import { calculateReadingTime } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('insights');
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+}
+
+interface Props { article: CollectionEntry<'insights'>; }
+const { article } = Astro.props;
+const { Content } = await render(article);
+const articles = await getCollection('insights');
+const { title: articleTitle, description, category, author, date, image } = article.data;
+const readingTime = calculateReadingTime(article.body);
+const title = `${articleTitle} | DMCA Vision`;
+const canonical = `https://dmcavision.com/insights/${article.id}/`;
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: articleTitle,
+    description,
+    datePublished: date.toISOString(),
+    dateModified: date.toISOString(),
+    mainEntityOfPage: canonical,
+    author: { '@type': 'Organization', name: author },
+    publisher: { '@type': 'Organization', name: 'DMCA Vision LLC', logo: { '@type': 'ImageObject', url: 'https://dmcavision.com/logo.svg' } }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://dmcavision.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Insights', item: 'https://dmcavision.com/insights/' },
+      { '@type': 'ListItem', position: 3, name: articleTitle, item: canonical }
+    ]
+  }
+];
+---
+
+<Layout {title} {description} {canonical} image={image} ogType="article" structuredData={schemas}>
+  <Header />
+  <main id="main-content" class="content-main article-page">
+    <section class="article-header-section"><ArticleHeader title={articleTitle} {description} {category} {author} {date} {readingTime} {image} collection="Insights" /></section>
+    <div class="container article-layout">
+      <article class="prose"><Content /></article>
+      <CTABox />
+      <RelatedArticles {articles} currentId={article.id} {category} />
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ResourceCard from './ResourceCard.astro';
+
+interface Props {
+  resources: CollectionEntry<'resources'>[];
+  currentId: string;
+  category: string;
+}
+
+const { resources, currentId, category } = Astro.props;
+const related = resources
+  .filter((resource) => resource.id !== currentId)
+  .sort((a, b) => Number(b.data.category === category) - Number(a.data.category === category))
+  .slice(0, 3);
+---
+
+{related.length > 0 && (
+  <section class="related-articles" aria-labelledby="related-resources-title">
+    <div class="content-section-heading"><span class="section-kicker">Continue learning</span><h2 id="related-resources-title">Related resources</h2></div>
+    <div class="resource-grid">{related.map((resource) => <ResourceCard {resource} />)}</div>
+  </section>
+)}

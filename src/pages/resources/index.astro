@@ -9,7 +9,7 @@ import CTABox from '../../components/CTABox.astro';
 const title = 'Resources | DMCA Vision';
 const description = 'Practical checklists and guides for copyright protection, trademark enforcement, and digital evidence collection.';
 const canonical = 'https://dmcavision.com/resources/';
-const resources = (await getCollection('resources')).sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const schema = [
   {
     '@context': 'https://schema.org',

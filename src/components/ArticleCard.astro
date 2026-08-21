@@ -1,20 +1,21 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import ContentImage from './ContentImage.astro';
+import { calculateReadingTime, formatArticleDate } from '../lib/content';
 
 interface Props { article: CollectionEntry<'insights'>; featured?: boolean; }
 const { article, featured = false } = Astro.props;
-const { title, description, category, pubDate, readingTime, heroImage } = article.data;
-const date = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(pubDate);
+const { title, description, category, date, image } = article.data;
+const readingTime = calculateReadingTime(article.body);
 ---
 
 <article class:list={['article-card', { featured }]}>
-  <ContentImage image={heroImage} class="card-media" />
+  <ContentImage {image} alt={title} class="card-media" />
   <div class="article-card-body">
     <span class="content-label">{category}</span>
     <h2><a href={`/insights/${article.id}/`}>{title}</a></h2>
     <p>{description}</p>
-    <div class="card-meta"><time datetime={pubDate.toISOString()}>{date}</time>{readingTime && <span>{readingTime}</span>}</div>
+    <div class="card-meta"><time datetime={date.toISOString()}>{formatArticleDate(date, true)}</time><span>{readingTime}</span></div>
     <a class="content-action" href={`/insights/${article.id}/`} aria-label={`Read ${title}`}>Read article <span aria-hidden="true">→</span></a>
   </div>
 </article>
