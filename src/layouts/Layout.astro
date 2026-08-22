@@ -28,7 +28,24 @@ const organization = {
   url: siteRoot,
   logo: `${siteRoot}logo.svg`,
   description,
-  address: { '@type': 'PostalAddress', addressCountry: 'US' }
+  email: 'info@dmcavision.com',
+  telephone: '+18283412352',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '1500 N Grant St, Ste N',
+    addressLocality: 'Denver',
+    addressRegion: 'CO',
+    postalCode: '80203',
+    addressCountry: 'US'
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    telephone: '+18283412352',
+    email: 'info@dmcavision.com',
+    areaServed: 'US',
+    availableLanguage: ['English']
+  }
 };
 const website = {
   '@context': 'https://schema.org',

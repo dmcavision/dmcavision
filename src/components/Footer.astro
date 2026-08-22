@@ -3,6 +3,38 @@ import Logo from './Logo.astro';
 const nav=[['Services','/#services'],['Technology','/#technology'],['Insights','/insights/'],['Resources','/resources/'],['Case Studies','/case-studies/'],['Methodology','/methodology/'],['About','/#about'],['Contact','/#contact']];
 ---
 <footer class="footer">
-  <div class="container footer-grid"><div class="footer-brand"><Logo light/><p>Digital copyright monitoring, evidence and online enforcement.</p><span class="identity-line">DMCA Vision LLC <i></i> United States</span></div><div><h3>Navigate</h3>{nav.map(([label,href])=><a href={href}>{label}</a>)}</div><div><h3>Legal</h3><a href="/privacy/">Privacy Policy</a><a href="/terms/">Terms of Service</a><a href="/copyright-policy/">Copyright Policy</a></div><div class="footer-cta"><h3>Protect what you create.</h3><a class="button button-sm" href="/#contact">Submit an Infringement</a><a class="footer-email" href="mailto:contact@dmcavision.com">contact@dmcavision.com</a></div></div>
-  <div class="container footer-bottom"><span>© 2026 DMCA Vision LLC. All rights reserved.</span><span>Digital protection, built with clarity.</span></div>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <Logo light />
+      <p>Digital copyright monitoring, evidence and online enforcement.</p>
+      <span class="identity-line">DMCA Vision LLC <i></i> United States</span>
+      <address class="footer-address">
+        <span>1500 N Grant St, Ste N</span>
+        <span>Denver, Colorado 80203</span>
+        <span>United States of America</span>
+      </address>
+    </div>
+    <div>
+      <h3>Navigate</h3>
+      {nav.map(([label,href]) => <a href={href}>{label}</a>)}
+    </div>
+    <div>
+      <h3>Legal</h3>
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="/terms/">Terms of Service</a>
+      <a href="/copyright-policy/">Copyright Policy</a>
+    </div>
+    <div class="footer-cta">
+      <h3>Protect what you create.</h3>
+      <a class="button button-sm" href="/#contact">Submit an Infringement</a>
+      <a class="footer-email" href="tel:+18283412352">+1 828 341 2352</a>
+      <a class="footer-email" href="mailto:info@dmcavision.com">info@dmcavision.com</a>
+    </div>
+  </div>
+  <div class="container footer-bottom"><span>&copy; 2026 DMCA Vision LLC. All rights reserved.</span><span>Digital protection, built with clarity.</span></div>
 </footer>
+
+<style>
+  .footer-address{display:grid;gap:3px;margin-top:15px;color:#7e8f9d;font-size:.62rem;font-style:normal;line-height:1.55}
+  .footer-cta .footer-email+.footer-email{margin-top:0!important}
+</style>
