@@ -64,8 +64,8 @@ const companyNav = [
 <style>
   .desktop-nav{gap:20px}
   .desktop-nav>a,.nav-dropdown>summary{position:relative;color:#bdc8d1;font-size:.77rem;font-weight:600;white-space:nowrap;transition:color .2s}
-  .desktop-nav>a:hover,.desktop-nav>a:focus-visible,.nav-dropdown>summary:hover,.nav-dropdown>summary:focus-visible{color:#fff}
-  .nav-dropdown{position:relative}
+  .desktop-nav>a:hover,.desktop-nav>a:focus-visible,.nav-dropdown>summary:hover,.nav-dropdown>summary:focus-visible,.nav-dropdown[open]>summary{color:#fff}
+  .nav-dropdown{position:relative;border-bottom:0}
   summary{list-style:none;cursor:pointer}summary::-webkit-details-marker{display:none}
   .nav-dropdown>summary{display:flex;align-items:center;gap:7px}
   .nav-chevron{width:7px;height:7px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
