@@ -1,0 +1,58 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  steps: string[];
+}
+
+const { title, description, steps } = Astro.props;
+const safeSteps = steps.slice(0, 8);
+const startX = 72;
+const endX = 888;
+const spacing = safeSteps.length > 1 ? (endX - startX) / (safeSteps.length - 1) : 0;
+const id = `diagram-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
+---
+
+<figure class="authority-diagram">
+  <div class="diagram-heading">
+    <span>Visual summary</span>
+    <h2>{title}</h2>
+    {description && <p>{description}</p>}
+  </div>
+  <svg viewBox="0 0 960 250" role="img" aria-labelledby={`${id}-title ${id}-description`}>
+    <title id={`${id}-title`}>{title}</title>
+    <desc id={`${id}-description`}>{description ?? `A ${safeSteps.length}-step process from ${safeSteps[0]} to ${safeSteps.at(-1)}.`}</desc>
+    <defs>
+      <marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#16c784" />
+      </marker>
+    </defs>
+    <rect x="1" y="1" width="958" height="248" rx="18" fill="#091625" stroke="#23384a" />
+    <path d="M40 52H920M40 198H920" stroke="#183044" stroke-dasharray="4 8" />
+    {safeSteps.slice(0, -1).map((_, index) => {
+      const x1 = startX + index * spacing + 27;
+      const x2 = startX + (index + 1) * spacing - 32;
+      return <line x1={x1} y1="121" x2={x2} y2="121" stroke="#16c784" stroke-width="2" stroke-dasharray="5 6" marker-end={`url(#${id}-arrow)`} />;
+    })}
+    {safeSteps.map((step, index) => {
+      const x = startX + index * spacing;
+      return (
+        <g>
+          <circle cx={x} cy="121" r="31" fill="#10283a" stroke="#27d89a" stroke-width="2" />
+          <circle cx={x} cy="121" r="22" fill="#0c1d2d" stroke="#26495a" />
+          <text x={x} y="126" text-anchor="middle" fill="#85e7c3" font-size="14" font-weight="800">{String(index + 1).padStart(2, '0')}</text>
+          <text x={x} y="174" text-anchor="middle" fill="#e6eef3" font-size="13" font-weight="700">{step}</text>
+        </g>
+      );
+    })}
+  </svg>
+  {description && <figcaption>{description}</figcaption>}
+</figure>
+
+<style>
+  .authority-diagram{width:min(100%,920px);margin:0 auto 54px;padding:25px;border:1px solid #dbe6e2;border-radius:18px;background:#f7faf9;box-shadow:0 18px 45px rgba(7,17,31,.07)}
+  .diagram-heading{margin-bottom:20px}.diagram-heading span{display:block;margin-bottom:8px;color:#087d54;font-size:.66rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+  .diagram-heading h2{margin:0 0 8px!important;font-size:1.55rem!important}.diagram-heading p,figcaption{color:#667085;font-size:.8rem;line-height:1.65}.diagram-heading p{margin:0}
+  svg{width:100%;height:auto;border-radius:14px}figcaption{margin-top:13px}
+  @media(max-width:640px){.authority-diagram{margin-bottom:38px;padding:16px}.diagram-heading h2{font-size:1.3rem!important}.diagram-heading p{font-size:.74rem}svg{min-height:210px}svg text{font-size:11px}}
+</style>

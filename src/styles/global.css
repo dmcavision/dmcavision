@@ -76,7 +76,7 @@ details{transition:border-color .2s}details[open]{border-color:#b9ccc4}summary{t
 .content-list-section{padding:92px 0 110px;background:linear-gradient(180deg,#f7fafb 0,#fff 360px)}
 .content-section-heading{margin-bottom:42px}
 .content-section-heading h2{font-size:clamp(2rem,3.4vw,3rem);margin:0}
-.secondary-heading{margin-top:70px}.featured-grid{grid-template-columns:1fr}
+.secondary-heading{margin-top:70px}.featured-grid{grid-template-columns:1fr}.pillar-grid{margin-top:22px}
 .content-label{display:inline-flex;color:#087d54;font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
 .content-action{display:inline-flex;align-items:center;gap:9px;color:#087d54;font-size:.72rem;font-weight:800}
 .content-action span{transition:transform .2s ease}.content-action:hover span{transform:translateX(4px)}

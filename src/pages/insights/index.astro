@@ -12,7 +12,17 @@ const canonical = 'https://dmcavision.com/insights/';
 const articles = (await getCollection('insights')).sort((a, b) =>
   Number(b.data.featured) - Number(a.data.featured) || b.data.date.valueOf() - a.data.date.valueOf()
 );
-const [featuredArticle, ...remainingArticles] = articles;
+const featuredPillarIds = [
+  'changing-landscape-online-copyright-abuse',
+  'evidence-intelligence-digital-enforcement',
+  'ai-powered-brand-monitoring',
+  'detection-to-removal-workflow',
+  'deepfakes-impersonation-risk'
+];
+const featuredPillars = featuredPillarIds
+  .map((id) => articles.find((article) => article.id === id))
+  .filter((article): article is (typeof articles)[number] => Boolean(article));
+const remainingArticles = articles.filter((article) => !featuredPillarIds.includes(article.id));
 const schema = [
   {
     '@context': 'https://schema.org',
@@ -46,8 +56,9 @@ const schema = [
     </section>
     <section class="content-list-section" aria-labelledby="latest-insights">
       <div class="container">
-        <div class="content-section-heading"><span class="section-kicker">Featured analysis</span><h2 id="latest-insights">Industry perspective</h2></div>
-        {featuredArticle && <div class="article-grid featured-grid"><ArticleCard article={featuredArticle} featured /></div>}
+        <div class="content-section-heading"><span class="section-kicker">Authority library</span><h2 id="latest-insights">Featured pillar articles</h2></div>
+        {featuredPillars[0] && <div class="article-grid featured-grid"><ArticleCard article={featuredPillars[0]} featured /></div>}
+        <div class="article-grid pillar-grid">{featuredPillars.slice(1).map((article) => <ArticleCard {article} />)}</div>
         <div class="content-section-heading secondary-heading"><span class="section-kicker">Latest thinking</span><h2>More insights</h2></div>
         <div class="article-grid">{remainingArticles.map((article) => <ArticleCard {article} />)}</div>
         <CTABox />

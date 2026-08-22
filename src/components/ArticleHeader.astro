@@ -14,10 +14,11 @@ interface Props {
   lastUpdated?: Date;
   readingTime: string;
   image?: string;
+  imageAlt?: string;
   collection: 'Insights' | 'Resources';
 }
 
-const { title, description, category, author, authorProfile, reviewedBy, date, lastUpdated, readingTime, image, collection } = Astro.props;
+const { title, description, category, author, authorProfile, reviewedBy, date, lastUpdated, readingTime, image, imageAlt, collection } = Astro.props;
 const collectionHref = collection === 'Insights' ? '/insights/' : '/resources/';
 const collectionKey = collection === 'Insights' ? 'insights' : 'resources';
 const categoryDefinition = getCategoryDefinition(collectionKey, category);
@@ -30,5 +31,5 @@ const categoryHref = `/${collectionKey}/category/${categoryDefinition?.slug}/`;
   <h1>{title}</h1>
   <p>{description}</p>
   <ArticleMeta {author} {authorProfile} {reviewedBy} {date} {lastUpdated} {readingTime} />
-  <ContentImage {image} alt={title} class="article-hero-media" eager />
+  <ContentImage {image} alt={imageAlt ?? title} class="article-hero-media" eager />
 </header>

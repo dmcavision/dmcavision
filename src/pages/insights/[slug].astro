@@ -7,8 +7,10 @@ import ArticleHeader from '../../components/ArticleHeader.astro';
 import CTABox from '../../components/CTABox.astro';
 import RelatedInsights from '../../components/RelatedInsights.astro';
 import RelatedResources from '../../components/RelatedResources.astro';
+import Diagram from '../../components/Diagram.astro';
 import { calculateReadingTime } from '../../lib/content';
 import { getCategoryDefinition } from '../../lib/contentArchitecture';
+import { pillarVisuals } from '../../lib/pillarVisuals';
 
 export async function getStaticPaths() {
   const articles = await getCollection('insights');
@@ -26,6 +28,7 @@ const title = seoTitle ?? `${articleTitle} | DMCA Vision`;
 const metaDescription = seoDescription ?? description;
 const canonical = `https://dmcavision.com/insights/${article.id}/`;
 const categoryDefinition = getCategoryDefinition('insights', category)!;
+const pillarVisual = pillarVisuals[article.id];
 const categoryUrl = `https://dmcavision.com/insights/category/${categoryDefinition.slug}/`;
 const authorUrl = new URL(authorProfile, 'https://dmcavision.com/').href;
 const schemas = [
@@ -57,9 +60,12 @@ const schemas = [
 <Layout {title} description={metaDescription} {canonical} image={image} ogType="article" structuredData={schemas}>
   <Header />
   <main id="main-content" class="content-main article-page">
-    <section class="article-header-section"><ArticleHeader title={articleTitle} {description} {category} {author} {authorProfile} {reviewedBy} {date} {lastUpdated} {readingTime} {image} collection="Insights" /></section>
+    <section class="article-header-section"><ArticleHeader title={articleTitle} {description} {category} {author} {authorProfile} {reviewedBy} {date} {lastUpdated} {readingTime} {image} imageAlt={pillarVisual?.alt} collection="Insights" /></section>
     <div class="container article-layout">
-      <article class="prose"><Content /></article>
+      <article class="prose">
+        {pillarVisual?.diagram && <Diagram {...pillarVisual.diagram} />}
+        <Content />
+      </article>
       <CTABox />
       <RelatedInsights insights={articles} currentId={article.id} sourceCategory={category} sourceCollection="insights" />
       <RelatedResources {resources} sourceCategory={category} sourceCollection="insights" />
