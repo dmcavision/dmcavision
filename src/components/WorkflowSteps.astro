@@ -1,0 +1,26 @@
+---
+interface Props {
+  steps: string[];
+  label?: string;
+}
+
+const { steps, label = 'Enforcement workflow' } = Astro.props;
+---
+
+<ol class="workflow-steps" aria-label={label}>
+  {steps.map((step, index) => (
+    <li>
+      <span>{String(index + 1).padStart(2, '0')}</span>
+      <strong>{step}</strong>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .workflow-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:24px 0 0;padding:0;list-style:none}
+  li{position:relative;display:grid;align-content:start;gap:10px;padding-right:18px;color:#344250;font-size:.75rem}
+  li:not(:last-child):after{content:"";position:absolute;top:17px;left:42px;right:6px;border-top:1px dashed #9fcfbd}
+  span{position:relative;z-index:1;width:34px;height:34px;display:grid;place-items:center;border:1px solid #91c9b4;border-radius:50%;background:#fff;color:#087d54;font-size:.61rem;font-weight:800}
+  strong{line-height:1.4}
+  @media(max-width:720px){.workflow-steps{grid-template-columns:1fr;gap:0}li{min-height:67px;padding:0 0 15px 50px}li:not(:last-child):after{top:34px;left:17px;right:auto;bottom:0;height:auto;border-top:0;border-left:1px dashed #9fcfbd}span{position:absolute;left:0;top:0}}
+</style>

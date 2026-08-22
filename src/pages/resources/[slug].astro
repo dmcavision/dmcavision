@@ -56,7 +56,7 @@ const schemas = [
 
 <Layout {title} description={metaDescription} {canonical} image={image} ogType="article" structuredData={schemas}>
   <Header />
-  <main id="main-content" class="content-main article-page">
+  <main id="main-content" class="content-main article-page" data-analytics-view="resource" data-article-title={articleTitle} data-article-category={category}>
     <section class="article-header-section"><ArticleHeader title={articleTitle} {description} {category} {author} {authorProfile} {reviewedBy} {date} {lastUpdated} {readingTime} {image} collection="Resources" /></section>
     <div class="container article-layout">
       <article class="prose"><Content /></article>

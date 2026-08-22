@@ -33,7 +33,7 @@
         <input type="hidden" name="formStartedAt" value="" />
         <label class="checkbox"><input type="checkbox" name="confirmed" aria-describedby="error-confirmed" required /><span>I confirm that the information I submit is accurate to the best of my knowledge.</span></label>
         <small class="field-error checkbox-error" id="error-confirmed" data-error-for="confirmed"></small>
-        <button class="button form-submit" type="submit"><span data-submit-label>Request Review</span> <span aria-hidden="true">→</span></button>
+        <button class="button form-submit" type="submit" data-request-review data-analytics-label="Request Review"><span data-submit-label>Request Review</span> <span aria-hidden="true">→</span></button>
         <p class="form-note">By submitting this form, you acknowledge that this inquiry does not create an attorney-client relationship.</p>
       </div>
 
@@ -51,6 +51,8 @@
 </section>
 
 <script>
+  import { trackContactStart, trackContactSubmit } from '../lib/analytics';
+
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
   if (form) {
     const fields = form.querySelector<HTMLElement>('[data-form-fields]');
@@ -95,6 +97,7 @@
     };
 
     resetStartedAt();
+    form.addEventListener('input', () => trackContactStart(), { once: true });
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (submitting) return;
@@ -143,6 +146,7 @@
         const referenceBlock = form.querySelector<HTMLElement>('[data-reference-block]');
         const referenceNote = form.querySelector<HTMLElement>('[data-reference-note]');
         const referenceValue = typeof result.reference === 'string' ? result.reference : '';
+        trackContactSubmit(referenceValue);
         if (reference) reference.textContent = referenceValue;
         referenceBlock?.toggleAttribute('hidden', !referenceValue);
         referenceNote?.toggleAttribute('hidden', !referenceValue);

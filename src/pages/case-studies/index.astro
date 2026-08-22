@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import Diagram from '../../components/Diagram.astro';
+
+const title = 'Case Studies | DMCA Vision';
+const description = 'Explore anonymized examples of digital rights enforcement workflows, evidence management, and online infringement response strategies.';
+const canonical = 'https://dmcavision.com/case-studies/';
+const caseStudies = [
+  {
+    title: 'Online Copyright Enforcement Case Study',
+    overview: 'A representative workflow for reviewing unauthorized distribution of protected digital assets across multiple online channels.',
+    challenge: 'Potentially unauthorized copies appeared in different formats and locations. The review needed to distinguish relevant uses, connect each observation to an authoritative source asset, and prepare channel-appropriate reporting records.',
+    evidence: ['Direct URLs and page-level identifiers', 'Full-page screenshots with capture timestamps', 'Source-file and publication metadata', 'Ownership and authorization documentation'],
+    resolution: 'The structured process supported a consistent enforcement workflow, helped organize reporting materials, and improved visibility into the status of observed copyright activity.',
+    keyAreas: ['Copyright Enforcement', 'Digital Evidence', 'Online Monitoring']
+  },
+  {
+    title: 'Online Counterfeit Brand Protection Case Study',
+    overview: 'An anonymized operating scenario involving suspected counterfeit listings distributed across seller accounts and marketplace locations.',
+    challenge: 'The activity required product and trademark validation, careful separation of suspected counterfeit offers from legitimate resale, and a case history capable of showing relisting and repeat seller patterns without unsupported attribution.',
+    evidence: ['Listing and seller identifiers', 'Product images, claims, and screenshots', 'Observation time and marketplace metadata', 'Trademark, product, and authorized-seller records'],
+    resolution: 'The workflow helped organize reporting processes, supported platform-specific review, and provided clearer visibility into listing recurrence and related commercial signals.',
+    keyAreas: ['Trademark Protection', 'Digital Evidence', 'Online Monitoring']
+  },
+  {
+    title: 'Digital Evidence Investigation Case Study',
+    overview: 'A representative evidence-management workflow for connecting changing web content, source records, reviewer decisions, and enforcement outcomes.',
+    challenge: 'Dynamic pages and dispersed records made it difficult to reconstruct what had been observed and why action was considered. The investigation required consistent timestamps, source context, access controls, and a distinction between facts and analytical assessments.',
+    evidence: ['URLs, redirects, and capture context', 'Screenshots and permitted media copies', 'Timestamps, metadata, and source provenance', 'Ownership information and reviewer notes'],
+    resolution: 'Structured evidence records improved visibility into infringement activity, supported professional review, and made reporting packages easier to prepare and track over time.',
+    keyAreas: ['Digital Evidence', 'Copyright Enforcement', 'Online Monitoring']
+  }
+];
+const schemas = [
+  { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://dmcavision.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Case Studies', item: canonical }
+  ] },
+  { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: caseStudies.map((study, index) => ({ '@type': 'ListItem', position: index + 1, name: study.title })) }
+];
+---
+
+<Layout {title} {description} {canonical} structuredData={schemas}>
+  <Header />
+  <main id="main-content" class="content-main trust-page">
+    <section class="content-list-hero">
+      <div class="container">
+        <nav class="breadcrumbs hub-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Case Studies</span></nav>
+        <span class="section-kicker light-kicker">Trust through process</span>
+        <h1>Case Studies</h1>
+        <p>Anonymized operational examples showing how structured monitoring, evidence, review, and reporting can support online intellectual property enforcement.</p>
+      </div>
+    </section>
+    <section class="case-study-section" aria-labelledby="case-study-heading">
+      <div class="container">
+        <div class="trust-intro">
+          <span class="section-kicker">Evidence-led operations</span>
+          <h2 id="case-study-heading">Representative enforcement workflows</h2>
+          <p>These examples describe general operating scenarios and do not identify clients, promise removal, or represent guaranteed legal outcomes. Each matter depends on its rights, evidence, platform, and jurisdiction.</p>
+        </div>
+        <Diagram title="Enforcement Workflow" description="A structured process preserves the basis for review from first detection through resolution monitoring." steps={['Detection', 'Evidence', 'Review', 'Submission', 'Resolution']} />
+        <div class="case-study-list">{caseStudies.map((study, index) => <CaseStudyCard {...study} index={index + 1} />)}</div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .case-study-section{padding:92px 0 115px;background:linear-gradient(180deg,#f4f8f7,#fff 420px)}
+  .trust-intro{max-width:800px;margin-bottom:48px}.trust-intro h2{font-size:clamp(2.2rem,4vw,3.5rem)}.trust-intro p{max-width:740px;color:#667085;font-size:.96rem}
+  .case-study-list{display:grid;gap:34px;margin-top:58px}
+  @media(max-width:560px){.case-study-section{padding:68px 0 80px}.case-study-list{margin-top:42px}}
+</style>

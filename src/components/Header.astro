@@ -1,28 +1,84 @@
 ---
 import Logo from './Logo.astro';
-const nav = [
+
+const primaryNav = [
   ['Home', '/#home'],
   ['Services', '/#services'],
   ['Technology', '/#technology'],
+  ['Insights', '/insights/']
+];
+const resourceNav = [
   ['Insights', '/insights/'],
   ['Resources', '/resources/'],
+  ['Case Studies', '/case-studies/']
+];
+const companyNav = [
   ['About', '/#about'],
-  ['Contact', '/#contact']
+  ['Methodology', '/methodology/']
 ];
 ---
+
 <header class="site-header" data-header>
   <div class="container nav-shell">
     <Logo light />
     <nav class="desktop-nav" aria-label="Primary navigation">
-      {nav.map(([label, href]) => <a href={href}>{label}</a>)}
+      {primaryNav.map(([label, href]) => <a href={href}>{label}</a>)}
+      <details class="nav-dropdown" name="desktop-navigation">
+        <summary>Resources <span class="nav-chevron" aria-hidden="true"></span></summary>
+        <div class="dropdown-menu">
+          {resourceNav.map(([label, href]) => <a href={href}>{label}</a>)}
+        </div>
+      </details>
+      <details class="nav-dropdown" name="desktop-navigation">
+        <summary>Company <span class="nav-chevron" aria-hidden="true"></span></summary>
+        <div class="dropdown-menu">
+          {companyNav.map(([label, href]) => <a href={href}>{label}</a>)}
+        </div>
+      </details>
+      <a href="/#contact">Contact</a>
     </nav>
-    <a class="button button-sm header-cta" href="/#contact">Protect Your Content</a>
+    <a class="button button-sm header-cta" href="/#contact" data-request-review data-analytics-label="Request Review">Request Review</a>
     <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
   </div>
   <nav id="mobile-menu" class="mobile-nav" data-menu aria-label="Mobile navigation">
-    {nav.map(([label, href]) => <a href={href}>{label}</a>)}
-    <a class="button" href="/#contact">Protect Your Content</a>
+    {primaryNav.map(([label, href]) => <a href={href}>{label}</a>)}
+    <details class="mobile-nav-group" name="mobile-navigation">
+      <summary>Resources <span class="nav-chevron" aria-hidden="true"></span></summary>
+      <div class="mobile-submenu">
+        {resourceNav.map(([label, href]) => <a href={href}>{label}</a>)}
+      </div>
+    </details>
+    <details class="mobile-nav-group" name="mobile-navigation">
+      <summary>Company <span class="nav-chevron" aria-hidden="true"></span></summary>
+      <div class="mobile-submenu">
+        {companyNav.map(([label, href]) => <a href={href}>{label}</a>)}
+      </div>
+    </details>
+    <a href="/#contact">Contact</a>
+    <a class="button" href="/#contact" data-request-review data-analytics-label="Request Review">Request Review</a>
   </nav>
 </header>
+
+<style>
+  .desktop-nav{gap:20px}
+  .desktop-nav>a,.nav-dropdown>summary{position:relative;color:#bdc8d1;font-size:.77rem;font-weight:600;white-space:nowrap;transition:color .2s}
+  .desktop-nav>a:hover,.desktop-nav>a:focus-visible,.nav-dropdown>summary:hover,.nav-dropdown>summary:focus-visible{color:#fff}
+  .nav-dropdown{position:relative}
+  summary{list-style:none;cursor:pointer}summary::-webkit-details-marker{display:none}
+  .nav-dropdown>summary{display:flex;align-items:center;gap:7px}
+  .nav-chevron{width:7px;height:7px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+  details[open]>summary .nav-chevron{transform:translateY(2px) rotate(225deg)}
+  .dropdown-menu{position:absolute;top:calc(100% + 20px);left:50%;z-index:20;display:grid;width:220px;padding:8px;transform:translateX(-50%);border:1px solid #2c4052;border-radius:12px;background:#0b1929;box-shadow:0 22px 55px rgba(0,0,0,.32)}
+  .dropdown-menu:before{content:"";position:absolute;left:50%;top:-6px;width:10px;height:10px;transform:translateX(-50%) rotate(45deg);border-left:1px solid #2c4052;border-top:1px solid #2c4052;background:#0b1929}
+  .dropdown-menu a{position:relative;z-index:1;padding:11px 12px;border-radius:7px;color:#b9c6cf;font-size:.72rem;font-weight:650;transition:color .2s,background .2s}
+  .dropdown-menu a:hover,.dropdown-menu a:focus-visible{color:#fff;background:#12283a}.dropdown-menu a:after{display:none!important}
+  .mobile-nav-group{border-bottom:1px solid #253443}
+  .mobile-nav-group>summary{display:flex;align-items:center;justify-content:space-between;padding:14px 5px;color:#d5dee5;font-weight:700}
+  .mobile-submenu{display:grid;padding:3px 0 10px 13px}
+  .mobile-submenu a{padding:11px 12px;border-left:1px solid #2a4a4a;color:#aebfc9;font-size:.86rem;font-weight:650}
+  .mobile-submenu a:hover,.mobile-submenu a:focus-visible{color:#74e0b9;background:#0d2030}
+  @media(max-width:1150px) and (min-width:821px){.desktop-nav{gap:12px}.desktop-nav>a,.nav-dropdown>summary{font-size:.68rem}}
+  @media(max-width:820px){.mobile-nav{overflow-y:auto}.mobile-nav-group{display:block}}
+</style>

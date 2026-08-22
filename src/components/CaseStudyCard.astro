@@ -1,0 +1,75 @@
+---
+import WorkflowSteps from './WorkflowSteps.astro';
+
+interface Props {
+  title: string;
+  overview: string;
+  challenge: string;
+  evidence: string[];
+  resolution: string;
+  keyAreas: string[];
+  index: number;
+}
+
+const { title, overview, challenge, evidence, resolution, keyAreas, index } = Astro.props;
+const headingId = `case-study-${index}`;
+const workflow = ['Detection', 'Evidence Collection', 'Validation', 'Platform Submission', 'Monitoring'];
+---
+
+<article class="case-study-card" aria-labelledby={headingId}>
+  <header>
+    <span class="case-number">Case study {String(index).padStart(2, '0')}</span>
+    <span class="case-note">Anonymized workflow example</span>
+    <h2 id={headingId}>{title}</h2>
+    <p>{overview}</p>
+  </header>
+
+  <div class="case-study-sections">
+    <section>
+      <span class="section-label">Challenge</span>
+      <h3>General enforcement context</h3>
+      <p>{challenge}</p>
+    </section>
+
+    <section class="approach-section">
+      <span class="section-label">Approach</span>
+      <h3>Structured review workflow</h3>
+      <WorkflowSteps steps={workflow} label={`${title} workflow`} />
+    </section>
+
+    <section>
+      <span class="section-label">Evidence considerations</span>
+      <h3>Information organized for review</h3>
+      <ul>{evidence.map((item) => <li>{item}</li>)}</ul>
+    </section>
+
+    <section>
+      <span class="section-label">Resolution</span>
+      <h3>Supported operational outcome</h3>
+      <p>{resolution}</p>
+    </section>
+  </div>
+
+  <footer>
+    <div class="key-areas" aria-label="Key areas">
+      {keyAreas.map((area) => <span>{area}</span>)}
+    </div>
+    <div class="case-cta">
+      <div><strong>Need assistance protecting your digital assets?</strong><small>Submit the relevant URLs and context for an initial review.</small></div>
+      <a class="button button-sm" href="/#contact">Submit Review Request</a>
+    </div>
+  </footer>
+</article>
+
+<style>
+  .case-study-card{overflow:hidden;border:1px solid #dbe5e9;border-radius:20px;background:#fff;box-shadow:0 22px 60px rgba(7,17,31,.08)}
+  header{position:relative;padding:42px 44px 38px;color:#fff;background:#0a1727;border-bottom:1px solid #213447}
+  header:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
+  header>*{position:relative;z-index:1}.case-number,.case-note,.section-label{display:inline-flex;color:#6eddb5;font-size:.63rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.case-note{float:right;color:#8da0af}
+  h2{max-width:780px;margin:18px 0 13px;font-size:clamp(1.8rem,3.2vw,2.7rem)}header p{max-width:830px;margin:0;color:#afbdc8;font-size:.9rem}
+  .case-study-sections{display:grid;grid-template-columns:1fr 1fr}.case-study-sections section{padding:34px 38px;border-right:1px solid #e1e8eb;border-bottom:1px solid #e1e8eb}.case-study-sections section:nth-child(2n){border-right:0}.approach-section{grid-column:1/-1!important;border-right:0!important}
+  h3{margin:9px 0 12px;font-size:1.12rem}section p,li{color:#5f6d79;font-size:.8rem;line-height:1.75}section p{margin:0}ul{margin:0;padding-left:20px}li{margin:5px 0}.section-label{color:#087d54}
+  footer{padding:28px 38px 34px}.key-areas{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:25px}.key-areas span{padding:6px 10px;border-radius:20px;background:#edf8f4;color:#087d54;font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .case-cta{display:flex;align-items:center;justify-content:space-between;gap:30px;padding:23px 25px;border:1px solid #d8e7e1;border-radius:12px;background:#f7fbf9}.case-cta div{display:grid}.case-cta strong{color:#182531;font-size:.9rem}.case-cta small{margin-top:3px;color:#6a7884;font-size:.7rem}.case-cta .button{flex:0 0 auto}
+  @media(max-width:760px){header,.case-study-sections section,footer{padding-left:24px;padding-right:24px}.case-note{display:block;float:none;margin-top:8px}.case-study-sections{grid-template-columns:1fr}.case-study-sections section,.approach-section{grid-column:auto!important;border-right:0}.case-cta{align-items:flex-start;flex-direction:column}.case-cta .button{width:100%}}
+</style>

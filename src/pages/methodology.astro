@@ -1,0 +1,86 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Diagram from '../components/Diagram.astro';
+import CTABox from '../components/CTABox.astro';
+
+const title = 'Our Enforcement Methodology | DMCA Vision';
+const description = 'Learn how DMCA Vision approaches digital rights enforcement through monitoring, evidence workflows, review, and reporting.';
+const canonical = 'https://dmcavision.com/methodology/';
+const stages = [
+  { title: 'Detection', description: 'Technology-assisted monitoring, referrals, and review inputs identify potentially infringing content across relevant online channels. A detection is treated as a candidate for assessment, not an automatic conclusion.', details: ['Source and detection reason retained', 'Relevant channel and asset identified', 'Priority informed by risk and context'] },
+  { title: 'Evidence Collection', description: 'The observed material is documented before outreach. Collection is proportionate to the case and preserves enough context for another reviewer to understand what was found.', details: ['Direct URLs and stable identifiers', 'Screenshots and capture timestamps', 'Relevant page, account, and content metadata', 'Protected asset and ownership documentation'] },
+  { title: 'Review & Validation', description: 'A professional reviewer compares the observation with authoritative rights and authorization records, checks context, and identifies uncertainty. Human review remains central to the action decision.', details: ['Rights and authority reviewed', 'Authorization and legitimate use considered', 'Evidence completeness checked', 'Uncertain matters escalated appropriately'] },
+  { title: 'Platform Submission', description: 'Validated case information is adapted to the receiving platform or service. Reports are scoped to the supported right, specific locations, and the action available to that recipient.', details: ['Correct reporting route selected', 'Required facts and declarations prepared', 'Submitted version and case identifier retained', 'No guarantee of platform action or legal outcome'] },
+  { title: 'Monitoring & Reporting', description: 'Responses and observed outcomes return to the case record. Follow-up monitoring helps identify restoration, relisting, recurring activity, and opportunities to improve future review.', details: ['Acknowledgement and status tracked', 'Resolution independently verified', 'Relisting and recurrence monitored', 'Operational reporting maintained'] }
+];
+const schemas = [
+  { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url: canonical, about: { '@type': 'Thing', name: 'Digital rights enforcement methodology' } },
+  { '@context': 'https://schema.org', '@type': 'HowTo', name: 'DMCA Vision Enforcement Methodology', description, step: stages.map((stage, index) => ({ '@type': 'HowToStep', position: index + 1, name: stage.title, text: stage.description })) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://dmcavision.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Methodology', item: canonical }
+  ] }
+];
+---
+
+<Layout {title} {description} {canonical} structuredData={schemas}>
+  <Header />
+  <main id="main-content" class="content-main methodology-page">
+    <section class="content-list-hero">
+      <div class="container">
+        <nav class="breadcrumbs hub-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Methodology</span></nav>
+        <span class="section-kicker light-kicker">Accountable rights operations</span>
+        <h1>Our Enforcement Methodology</h1>
+        <p>DMCA Vision combines technology-assisted monitoring, structured evidence workflows, and professional review to support intellectual property enforcement.</p>
+      </div>
+    </section>
+
+    <section class="methodology-overview" aria-labelledby="methodology-overview-title">
+      <div class="container">
+        <div class="methodology-intro">
+          <span class="section-kicker">A structured operating model</span>
+          <h2 id="methodology-overview-title">From monitoring signal to documented outcome</h2>
+          <p>The methodology separates detection, validation, evidence, action, and outcome tracking. This supports consistent decisions while recognizing that platform procedures, applicable rights, and individual facts vary.</p>
+        </div>
+        <Diagram title="Enforcement Workflow" description="Each stage retains the information needed for the next accountable decision." steps={['Detection', 'Evidence', 'Review', 'Submission', 'Resolution']} />
+      </div>
+    </section>
+
+    <section class="methodology-stages" aria-labelledby="methodology-stages-title">
+      <div class="container">
+        <div class="methodology-heading"><span class="section-kicker">Five operating stages</span><h2 id="methodology-stages-title">How the process works</h2></div>
+        <ol class="stage-list">
+          {stages.map((stage, index) => (
+            <li>
+              <div class="stage-number">{String(index + 1).padStart(2, '0')}</div>
+              <article>
+                <h3>{stage.title}</h3>
+                <p>{stage.description}</p>
+                <ul>{stage.details.map((detail) => <li>{detail}</li>)}</ul>
+              </article>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="evidence-lifecycle" aria-labelledby="evidence-lifecycle-title">
+      <div class="container">
+        <div class="methodology-intro"><span class="section-kicker">Evidence continuity</span><h2 id="evidence-lifecycle-title">Maintain context through the evidence lifecycle</h2><p>Original observations, working review records, submission packages, and outcomes remain connected without treating operational documentation as a universal forensic standard.</p></div>
+        <Diagram title="Evidence Lifecycle" description="Structured handling keeps source context available from capture through archive." steps={['Capture', 'Verify', 'Package', 'Submit', 'Archive']} />
+        <CTABox />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .methodology-overview,.evidence-lifecycle{padding:92px 0;background:linear-gradient(180deg,#f4f8f7,#fff 420px)}.methodology-intro{max-width:800px;margin-bottom:48px}.methodology-intro h2,.methodology-heading h2{font-size:clamp(2.2rem,4vw,3.5rem)}.methodology-intro p{max-width:740px;color:#667085;font-size:.96rem}
+  .methodology-stages{padding:100px 0;background:#07111f;color:#fff}.methodology-heading{margin-bottom:55px}.methodology-heading .section-kicker{color:#72deb8}.stage-list{margin:0;padding:0;list-style:none;border-top:1px solid #26394a}.stage-list>li{display:grid;grid-template-columns:105px 1fr;padding:38px 0;border-bottom:1px solid #26394a}.stage-number{color:#56d5a6;font-size:.73rem;font-weight:800;letter-spacing:.1em}.stage-list article{display:grid;grid-template-columns:.55fr 1fr .9fr;gap:40px;align-items:start}.stage-list h3{margin:0;font-size:1.55rem}.stage-list p{margin:0;color:#a8b7c3;font-size:.84rem;line-height:1.8}.stage-list ul{margin:0;padding:0;list-style:none}.stage-list article li{position:relative;padding:5px 0 5px 20px;color:#c7d2da;font-size:.72rem}.stage-list article li:before{content:"";position:absolute;left:0;top:13px;width:6px;height:6px;border-radius:50%;background:#16c784}
+  .evidence-lifecycle{background:#fff}.evidence-lifecycle :global(.content-cta){width:min(100%,980px);margin-inline:auto}
+  @media(max-width:850px){.stage-list article{grid-template-columns:1fr}.stage-list>li{grid-template-columns:65px 1fr}.stage-list article{gap:14px}}
+  @media(max-width:560px){.methodology-overview,.methodology-stages,.evidence-lifecycle{padding:68px 0}.stage-list>li{grid-template-columns:1fr;gap:12px}.stage-list article{gap:12px}}
+</style>

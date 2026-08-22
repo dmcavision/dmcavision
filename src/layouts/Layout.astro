@@ -48,6 +48,14 @@ const website = {
     <meta name="color-scheme" content="light" />
     <meta name="generator" content={Astro.generator} />
     <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-892TRHWKYJ"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-892TRHWKYJ', { send_page_view: true });
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -76,6 +84,8 @@ const website = {
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <slot />
     <script>
+      import { trackInsightView, trackResourceView, trackReviewClick } from '../lib/analytics';
+
       const header = document.querySelector('[data-header]');
       const toggle = document.querySelector('[data-menu-toggle]');
       const menu = document.querySelector('[data-menu]');
@@ -112,6 +122,20 @@ const website = {
         syncExpanded();
         details.addEventListener('toggle', syncExpanded);
       });
+
+      document.addEventListener('click', (event) => {
+        if (!(event.target instanceof Element)) return;
+        const cta = event.target.closest<HTMLElement>('[data-request-review]');
+        if (!cta) return;
+        const buttonText = cta.dataset.analyticsLabel || cta.textContent?.trim() || 'Request Review';
+        trackReviewClick(buttonText);
+      });
+
+      const insightView = document.querySelector<HTMLElement>('[data-analytics-view="insight"]');
+      if (insightView) trackInsightView(insightView.dataset.articleTitle ?? '', insightView.dataset.articleCategory ?? '');
+
+      const resourceView = document.querySelector<HTMLElement>('[data-analytics-view="resource"]');
+      if (resourceView) trackResourceView(resourceView.dataset.articleTitle ?? '', resourceView.dataset.articleCategory ?? '');
 
     </script>
   </body>
